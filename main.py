@@ -1,8 +1,8 @@
 # to import something from a file.py in a different directory
 import sys
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Reactor')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Oscillation')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Spectrum')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Reactor')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Oscillation')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Spectrum')
 
 import latex # to use latex font and siunitx package
 from reactor import Reactor_Spectrum # import class
@@ -79,7 +79,7 @@ for num in sig:
 ax.legend() '''
 
 
-'''fig1 = plt.figure()
+fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
 ax1.plot(E-0.8,conv_np_N,'b',linewidth=1,label='NO')
 ax1.plot(E-0.8,conv_np_I,'r--',linewidth=1,label='IO')
@@ -90,12 +90,12 @@ ax1.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numpy
 ax1.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax1.legend()
 ax1.grid()
-fig1.savefig('osc_spectrum_w_resolution_np.pdf',format='pdf',transparent=True)'''
+fig1.savefig('osc_spectrum_w_resolution_np.pdf',format='pdf',transparent=True)
 
 '''sig = np.array([0.04,0.05,0.06,0.07,0.08,0.09,0.1])
 for num in sig:
     ax1.plot(E-0.8,convol.np_conv(spectrum.norm_osc_spect_N,E,sigma=num), linewidth=0.7,label='sigma = %.2f' % (num)) 
-ax1.legend()'''
+ax1.legend() '''
 
 
 #appo = (E.max() - E.min())/len(E)
