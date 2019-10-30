@@ -1,7 +1,7 @@
 import sys
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Reactor')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Oscillation')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/juno_scripts/Spectrum')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Reactor')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Oscillation')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Spectrum')
 
 import latex # to use latex font and siunitx package
 from reactor import Reactor_Spectrum # import class
@@ -12,6 +12,7 @@ from convolution import Convolution
 import math
 import numpy as np
 from scipy import integrate
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 #import time
@@ -23,8 +24,6 @@ def Gaussian (x,sigma):
     return appo
 
 
-
-#time_start = time.process_time_ns()
 
 E = np.arange(1.806,10.01,0.01) # in MeV
 Evis = E - 0.8
@@ -43,20 +42,22 @@ a = 0.029
 b = 0.008
 
 Gs = np.empty((len(E),len(E)))
+Gs_norm = np.empty((len(E),len(E)))
 n_=0
 for E0 in Evis:
     appo = math.pow(a,2) / E0 + math.pow(b,2)
     sigma = math.sqrt(appo) * E0
     g = Gaussian(Evis - E0,sigma)
+    Gs[n_,] = g
     g_appo = g * spectrum.norm_osc_spect_N[n_]
-    Gs[n_,] = g_appo
+    Gs_norm[n_,] = g_appo
     n_ += 1
 
 g_sum = np.empty(len(E))
 g_sum_simps = np.empty(len(E))
 for n0 in np.arange(0,len(E)):
-    g_sum[n0] = Gs[:,n0].sum()
-    g_sum_simps[n0] = integrate.simps(Gs[:,n0],E)
+    g_sum[n0] = Gs_norm[:,n0].sum()
+    g_sum_simps[n0] = integrate.simps(Gs_norm[:,n0],E)
 
 const = (Evis[-1] - Evis[0]) / len(Evis)
 #ax.plot(zero,Evis,g_sum*const,'g',linewidth=1.,label='convolution')
@@ -76,8 +77,6 @@ for n0 in n:
     x_appo.fill(x)
     ax.plot(x_appo,Evis,g_appo,linewidth=1.,label=r'sigma = %.4f $10^{-2}$' % (sigma*100))
 
-#time_el = time.process_time_ns()
-#print('elapsed time: ' + str(time_el*10**(-6)) + ' ms')
 
 fig.suptitle('Convolution via a graphic method')
 ax.set_xlabel(r'$\text{E}_{\nu}$ [\si{MeV}]')
@@ -87,9 +86,19 @@ ax.set_ylim(0.,11.)
 ax.set_zlabel(r'N [arb. unit]')
 #ax.set_zlim(-0.005,0.095)
 ax.legend(prop={'size': 8})
-fig.savefig('3d_convolution.pdf',format='pdf')
+fig.savefig('3d_convolution.pdf',format='pdf') 
 
-fig1 = plt.figure()
+#Gs_flipped = np.flip(Gs,axis=0)
+fig2 = plt.figure()
+ax2 = fig2.add_subplot(111)
+im = ax2.imshow(Gs, cmap='Blues', norm=mpl.colors.Normalize(), interpolation='none', origin={'lower','lower'}, extent=[Evis[0], Evis[-1], Evis[0], Evis[-1]], vmin=abs(Gs).min())
+bar = fig2.colorbar(im)
+ax2.set_xlabel(r'$\text{E}_{\text{vis}}^{\text{obs}}$ [\si{MeV}]')
+ax2.set_ylabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
+bar.set_label(r'G($\text{E}_{\text{vis}}^{\text{obs}} - \text{E}_{\text{vis}}$, $\delta \text{E}_{\text{vis}}$)')
+
+
+'''fig1 = plt.figure()
 fig1.suptitle(r'3d convolution')
 ax1 = fig1.add_subplot(111)
 #ax1.plot(Evis,spectrum.norm_osc_spect_N,'b',linewidth=1.,label='NO')
@@ -100,7 +109,7 @@ ax1.set_ylabel(r'N [arb. unit]')
 ax1.set_ylim(-0.005,0.095)
 ax1.grid()
 ax1.legend()
-fig1.savefig('conv_3d.pdf',format='pdf')
+fig1.savefig('conv_3d.pdf',format='pdf') '''
 
 plt.ion()
 plt.show()

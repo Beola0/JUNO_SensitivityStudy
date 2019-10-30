@@ -79,13 +79,14 @@ for num in sig:
 ax.legend() '''
 
 
+const = (E[-1] - E[0])/len(E)
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.plot(E-0.8,conv_np_N,'b',linewidth=1,label='NO')
-ax1.plot(E-0.8,conv_np_I,'r--',linewidth=1,label='IO')
+ax1.plot(E-0.8,conv_np_N*const,'b',linewidth=1,label='NO')
+ax1.plot(E-0.8,conv_np_I*const,'r--',linewidth=1,label='IO')
 ax1.set_xlabel(r'$\text{E}_{\text{vis}}^{\text{obs}}$ [\si{MeV}]')
 ax1.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
-ax1.set_ylim(-0.5,9.5)
+ax1.set_ylim(-0.005,0.095)
 ax1.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numpy.convolve())')
 ax1.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax1.legend()
@@ -94,14 +95,10 @@ fig1.savefig('osc_spectrum_w_resolution_np.pdf',format='pdf',transparent=True)
 
 '''sig = np.array([0.04,0.05,0.06,0.07,0.08,0.09,0.1])
 for num in sig:
-    ax1.plot(E-0.8,convol.np_conv(spectrum.norm_osc_spect_N,E,sigma=num), linewidth=0.7,label='sigma = %.2f' % (num)) 
+    ax1.plot(E-0.8,convol.np_conv(spectrum.norm_osc_spect_N,E,sigma=num) * const, linewidth=0.7,label='sigma = %.2f' % (num)) 
 ax1.legend() '''
 
 
-#appo = (E.max() - E.min())/len(E)
-#plt.plot(Evis,conv*appo,'k-',linewidth=1,label='conv')
-#plt.plot(Evis,conv_num,'y--',linewidth=1,label='num conv')
-#plt.legend() 
 
 
 '''fig = plt.figure()

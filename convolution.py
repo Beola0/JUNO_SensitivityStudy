@@ -7,8 +7,6 @@ from scipy import signal
 
 class Convolution ():
 
-    #def __init__(self): # not necessary
-
     def Gaussian (self,x,sigma):
         const = math.sqrt(2*math.pi)
         appo = 1/const/sigma * np.exp(- np.power(x,2)/2./(sigma**2))
@@ -25,6 +23,7 @@ class Convolution ():
             
             g = self.Gaussian(Evis-np.mean(Evis),sigma)
             self.conv_np = np.convolve(f,g,mode='same')
+            #self.conv_np = signal.fftconvolve(f,g,mode='same') # same results as np.convolve()
 
         if a != '' or b != '':
         
@@ -33,6 +32,7 @@ class Convolution ():
 
             g = self.Gaussian(Evis-np.mean(Evis),sigma_Evis)
             self.conv_np = np.convolve(f,g,mode='same')
+            #self.conv_np = signal.fftconvolve(f,g,mode='same')
 
         if plot_this:
 
@@ -57,18 +57,13 @@ class Convolution ():
         return self.conv_np
 
 
-
-    # using a numerical method
-    # fixed sigma as input
+    # using a numerical method: numerical convolution (over Evis)
     def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False):
 
         Evis = E - 0.8
 
         if sigma != '':
 
-            #print('fixed sigma')
-
-            # numerical convolution (over Evis)
             self.conv_num = np.zeros(len(Evis))
             n=0
             for E0 in Evis:
@@ -79,13 +74,10 @@ class Convolution ():
                 n += 1
             
         if a != '' or b != '':
-
-            #print('variable sigma')
         
             rad = a**2 / Evis + b**2
             sigma_Evis = np.sqrt(rad) * Evis
 
-            # numerical convolution (over Evis)
             self.conv_num = np.zeros(len(Evis))
             n=0
             for E0 in Evis:
