@@ -47,6 +47,8 @@ class Reactor_Spectrum:
 
             plt.savefig('Reactor/flux.pdf',format='pdf',transparent=True)
 
+        return self.tot_flux
+
     # this function evaluates the IBD cross section
     def cross_section(self,E,plot_this=False): # E is the neutrino's energy
         alpha = -0.07056
@@ -80,6 +82,8 @@ class Reactor_Spectrum:
 
             plt.savefig('Reactor/cross_section.pdf',format='pdf',transparent=True)
 
+        return self.x_sec
+
     # this function combines flux and cross section to obtain the spectrum
     def unosc_spectrum(self,E,plot_this=False):
         self.flux(E,plot_this=False)
@@ -103,6 +107,8 @@ class Reactor_Spectrum:
             ax.set_title(r'Unoscillated reactor spectrum')
 
             plt.savefig('Reactor/unoscillated_spectrum.pdf',format='pdf',transparent=True)
+
+        return self.norm_spectrum_un
 
         
 

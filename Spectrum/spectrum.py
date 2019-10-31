@@ -54,7 +54,7 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum.pdf', format='pdf', transparent=True)
 
-
+        return self.norm_osc_spect_N, self.norm_osc_spect_I
 
 
 

@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes')
+
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,7 +45,7 @@ ax1.tick_params(axis='y', labelcolor='r')
 
 fig.tight_layout()
 
-fig.savefig('Resolution/resolution.pdf',format='pdf',transparent=True)
+fig.savefig('resolution.pdf',format='pdf',transparent=True)
 
 plt.ion()
 plt.show()

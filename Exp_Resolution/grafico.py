@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Reactor')
 sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Oscillation')
 sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Spectrum')
+sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes')
 
 import latex # to use latex font and siunitx package
 from reactor import Reactor_Spectrum # import class

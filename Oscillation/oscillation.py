@@ -96,4 +96,6 @@ class Oscillation_Prob: # survival probability
                 ax1.legend()
                 fig1.savefig('Oscillation/prob_E.pdf',format='pdf',transparent=True)
 
+        return self.prob_E_N, self.prob_E_I
+
 
