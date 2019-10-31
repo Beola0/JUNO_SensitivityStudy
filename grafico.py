@@ -60,7 +60,7 @@ for n0 in np.arange(0,len(E)):
     g_sum_simps[n0] = integrate.simps(Gs_norm[:,n0],E)
 
 const = (Evis[-1] - Evis[0]) / len(Evis)
-#ax.plot(zero,Evis,g_sum*const,'g',linewidth=1.,label='convolution')
+ax.plot(zero,Evis,g_sum*const,'g',linewidth=1.,label='convolution')
 ax.plot(zero,Evis,g_sum_simps,'r',linewidth=1.,label='convolution')
 
 n = np.array([20,70,120,170,220,270,320,370,420,470,520,570,620,670,720]) # al MeV e al mezzo MeV
@@ -76,7 +76,6 @@ for n0 in n:
     x_appo = np.empty(len(E))
     x_appo.fill(x)
     ax.plot(x_appo,Evis,g_appo,linewidth=1.,label=r'sigma = %.4f $10^{-2}$' % (sigma*100))
-
 
 fig.suptitle('Convolution via a graphic method')
 ax.set_xlabel(r'$\text{E}_{\nu}$ [\si{MeV}]')
@@ -96,6 +95,7 @@ bar = fig2.colorbar(im)
 ax2.set_xlabel(r'$\text{E}_{\text{vis}}^{\text{obs}}$ [\si{MeV}]')
 ax2.set_ylabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
 bar.set_label(r'G($\text{E}_{\text{vis}}^{\text{obs}} - \text{E}_{\text{vis}}$, $\delta \text{E}_{\text{vis}}$)')
+ax2.set_title(r'Detector response')
 
 
 '''fig1 = plt.figure()
