@@ -96,7 +96,7 @@ ax2.set_xlabel(r'$\text{E}_{\text{vis}}^{\text{obs}}$ [\si{MeV}]')
 ax2.set_ylabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
 bar.set_label(r'G($\text{E}_{\text{vis}}^{\text{obs}} - \text{E}_{\text{vis}}$, $\delta \text{E}_{\text{vis}}$)')
 ax2.set_title(r'Detector response')
-
+fig2.savefig('response.pdf',format='pdf')
 
 '''fig1 = plt.figure()
 fig1.suptitle(r'3d convolution')
