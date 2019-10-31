@@ -99,3 +99,94 @@ class Oscillation_Prob: # survival probability
         return self.prob_E_N, self.prob_E_I
 
 
+
+    def sin (self,x,dm2): 
+        appo = 1.27 * dm2 * x  # x in [m/MeV]
+        return np.sin(appo)
+
+    def cos (self,x,dm2): 
+        appo = 1.27 * dm2 * x  # x in [m/MeV]
+        return np.cos(appo)
+
+    # this function evalutates the survival prob as function of L/E and E 
+    def eval_prob_jhep(self,E,ordering,plot_this=False): # formula from JHEP05(2013)131, Japanese
+
+        if (ordering < -1) or (ordering > 1):
+            print('Error: use 1 for NO, -1 for IO, 0 for both')
+            return -1
+
+        x = np.arange(0.01,500000,1.) # [m/MeV]
+        x_E = self.baseline*1000 / E # [m/MeV]
+
+        # Normal Ordering
+        A_N = math.pow(1-self.sin2_13_N,2) * 4. * self.sin2_12 * (1 - self.sin2_12)
+        B_N = 4 * self.sin2_13_N * (1 - self.sin2_13_N)
+        C_N = self.sin2_12 * B_N
+        D_N = self.sin2_12 * B_N / 2.
+
+        self.jhep_prob_N = 1. - A_N * self.sin2(x,self.deltam_21) - B_N * self.sin2(x,abs(self.deltam_3l_N)) - C_N * self.sin2(x,self.deltam_21) * self.cos(x,2*abs(self.deltam_3l_N)) + D_N * self.sin(x,2*abs(self.deltam_3l_N)) * self.sin(x,2*self.deltam_21)
+        self.jhep_prob_E_N = 1. - A_N * self.sin2(x_E,self.deltam_21) - B_N * self.sin2(x_E,abs(self.deltam_3l_N)) - C_N * self.sin2(x_E,self.deltam_21) * self.cos(x_E,2*abs(self.deltam_3l_N)) + D_N * self.sin(x_E,2*abs(self.deltam_3l_N)) * self.sin(x_E,2*self.deltam_21)
+
+        # Inverted Ordering
+        A_I = math.pow(1-self.sin2_13_I,2) * 4. * self.sin2_12 * (1 - self.sin2_12)
+        B_I = 4 * self.sin2_13_I * (1 - self.sin2_13_I)
+        C_I = self.sin2_12 * B_I
+        D_I = self.sin2_12 * B_I / 2.
+
+        delta_appo = self.deltam_21 + self.deltam_3l_I
+        print(delta_appo)
+
+        self.jhep_prob_I = 1. - A_I * self.sin2(x,self.deltam_21) - B_I * self.sin2(x,abs(delta_appo)) - C_I * self.sin2(x,self.deltam_21) * self.cos(x,2*abs(delta_appo)) - D_I * self.sin(x,2*abs(delta_appo)) * self.sin(x,2*self.deltam_21)
+        self.jhep_prob_E_I = 1. - A_I * self.sin2(x_E,self.deltam_21) - B_I * self.sin2(x_E,abs(delta_appo)) - C_I * self.sin2(x_E,self.deltam_21) * self.cos(x_E,2*abs(delta_appo)) - D_I * self.sin(x_E,2*abs(delta_appo)) * self.sin(x_E,2*self.deltam_21)
+
+        if plot_this:
+            
+            fig = plt.figure()
+            #fig.suptitle(r'Survival probability') # as function of L/E
+            ax = fig.add_subplot(111)
+            ax.grid()
+            ax.set_xlim(left=0.02,right=80)
+            ax.set_xlabel(r'L/$\text{E}_{\nu}$ [\si[per-mode=symbol]{\kilo\meter\per\MeV}]')
+            ax.set_ylabel(r'P ($\bar{\nu}_{e} \rightarrow \bar{\nu}_{e}$)')
+            ax.set_title(r'Survival probability'+'\n(jhep05(2013)131)')
+
+            fig1 = plt.figure()
+            #fig1.suptitle(r'Survival probability') # as function of E
+            ax1 = fig1.add_subplot(111)
+            ax1.grid()
+            ax1.set_xlabel(r'$\text{E}_{\nu}$ [\si[per-mode=symbol]{\MeV}]')
+            ax1.set_ylabel(r'P ($\bar{\nu}_{e} \rightarrow \bar{\nu}_{e}$)')
+            ax1.set_title(r'Survival probability'+'\n(jhep05(2013)131)')
+
+            if ordering == 1 or ordering == 0: # NO
+
+                ax.semilogx(x/1000,self.jhep_prob_N,'b',linewidth=1,label='NO')
+                ax.legend()
+                fig.savefig('Oscillation/jhep_2013_prob_N_LE.pdf',format='pdf',transparent=True)
+                ax1.plot(E,self.jhep_prob_E_N,'b',linewidth=1,label='NO')
+                ax1.legend()
+                fig1.savefig('Oscillation/jhep_2013_prob_N_E.pdf',format='pdf',transparent=True)
+
+            if ordering == -1: # IO
+                ax.semilogx(x/1000,self.jhep_prob_I,'r',linewidth=1,label='IO')
+                ax.legend()
+                fig.savefig('Oscillation/jhep_2013_prob_I_LE.pdf',format='pdf',transparent=True)
+                ax1.plot(E,self.jhep_prob_E_I,'r',linewidth=1,label='IO')
+                ax1.legend()
+                fig1.savefig('Oscillation/jhep_2013_prob_I_E.pdf',format='pdf',transparent=True)
+
+            if ordering == 0: # IO
+                ax.semilogx(x/1000,self.jhep_prob_I,'r--',linewidth=1,label='IO')
+                ax.legend()
+                fig.savefig('Oscillation/jhep_2013_prob_LE.pdf',format='pdf',transparent=True)
+                ax1.plot(E,self.jhep_prob_E_I,'r--',linewidth=1,label='IO')
+                ax1.legend()
+                fig1.savefig('Oscillation/jhep_2013_prob_E.pdf',format='pdf',transparent=True)
+
+        return self.jhep_prob_E_N, self.jhep_prob_E_I
+
+
+
+
+
+

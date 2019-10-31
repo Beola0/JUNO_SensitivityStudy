@@ -31,9 +31,11 @@ E = np.arange(1.806,10.01,0.01) # in MeV
 
 # input: sin2(theta12), deltam2_21, NO: sin2(theta13), deltam2_3l, IO: sin2(theta13), deltam2_3l
 # values from nu-fit.org: JHEP01 (2019) 106, table 1, (Spaniards)
-#prob = Oscillation_Prob(t12=0.310, m21=7.39*10**(-5), t13_N=0.02240, m3l_N=2.525*10**(-3), t13_I=0.02263, m3l_I=-2.512*10**(-3))
+prob = Oscillation_Prob(t12=0.310, m21=7.39*10**(-5), t13_N=0.02240, m3l_N=2.525*10**(-3), t13_I=0.02263, m3l_I=-2.512*10**(-3))
 
-#prob.eval_prob(E,-1,plot_this=True)
+prob.eval_prob(E,0,plot_this=True)
+prob.eval_prob_jhep(E,0,plot_this=True)
+
 
 # parameters from nu-fit.org (JHEP01 (2019) 106, table 1, with SK)
 # input: sin2(theta12), deltam2_21, NO: sin2(theta13), deltam2_3l, IO: sin2(theta13), deltam2_3l
@@ -61,7 +63,7 @@ conv_num_I = convol.numerical_conv(spectrum.norm_osc_spect_I,E,a=a,b=b,plot_this
 #print('elapsed time: '+str(elapsed_time*10**(-6))+' ms')
 
 
-fig = plt.figure()
+'''fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(E-0.8,conv_num_N,'b',linewidth=1,label='NO')
 ax.plot(E-0.8,conv_num_I,'r--',linewidth=1,label='IO')
@@ -72,7 +74,7 @@ ax.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numeri
 ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax.legend()
 ax.grid()
-fig.savefig('osc_spectrum_w_resolution_num.pdf',format='pdf',transparent=True) 
+fig.savefig('osc_spectrum_w_resolution_num.pdf',format='pdf',transparent=True) '''
 
 '''sig = np.array([0.04,0.05,0.06,0.07,0.08,0.09,0.1])
 for num in sig:
@@ -80,7 +82,7 @@ for num in sig:
 ax.legend() '''
 
 
-const = (E[-1] - E[0])/len(E)
+'''const = (E[-1] - E[0])/len(E)
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
 ax1.plot(E-0.8,conv_np_N*const,'b',linewidth=1,label='NO')
@@ -92,7 +94,7 @@ ax1.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numpy
 ax1.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax1.legend()
 ax1.grid()
-fig1.savefig('osc_spectrum_w_resolution_np.pdf',format='pdf',transparent=True)
+fig1.savefig('osc_spectrum_w_resolution_np.pdf',format='pdf',transparent=True)'''
 
 '''sig = np.array([0.04,0.05,0.06,0.07,0.08,0.09,0.1])
 for num in sig:
