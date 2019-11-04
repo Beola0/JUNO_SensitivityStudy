@@ -1,4 +1,4 @@
 # JUNO_codes
  
-This is a local repository on my computer with all codes related to my thesis in the JUNO experiment.
-I will work on my computer and all files will be synced in GitHub.
+This is a repository with all codes related to my thesis within the JUNO experiment.
+The thesis title is "Sensitivity study to the neutrino mass hierarchy in the JUNO experiment".
