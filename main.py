@@ -44,7 +44,7 @@ prob_N, prob_I = prob.eval_prob(E,0,plot_this=False)
 spectrum = Oscillated_Spectrum(t12=0.310, m21=7.39*10**(-5), t13_N=0.02240, m3l_N=2.525*10**(-3), t13_I=0.02263, m3l_I=-2.512*10**(-3))
 spectrum_N, spectrum_I = spectrum.osc_spectrum(E,0,plot_this=True)
 
-# experimental resolution
+# experimental resolution via numerical convolution
 a = 0.029
 b = 0.008
 convol = Convolution()
@@ -58,14 +58,14 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(E-0.8,conv_num_N,'b',linewidth=1,label='NO')
 ax.plot(E-0.8,conv_num_I,'r--',linewidth=1,label='IO')
-ax.set_xlabel(r'$\text{E}_{\text{vis}}^{\text{obs}}$ [\si{MeV}]')
+ax.set_xlabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
 ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
 ax.set_ylim(-0.005,0.095)
 ax.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numerical convolution)')
 ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax.legend()
 ax.grid()
-fig.savefig('osc_spectrum_w_resolution_num.pdf',format='pdf',transparent=True) 
+#fig.savefig('osc_spectrum_w_resolution_num.pdf',format='pdf',transparent=True) 
 
 plt.ion()
 plt.show()

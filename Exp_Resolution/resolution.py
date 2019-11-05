@@ -28,7 +28,7 @@ sigma_Evis = np.sqrt(appo) * Evis
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-ax.set_xlabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
+ax.set_xlabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
 ax.set_xlim(0,10)
 ax.set_ylabel(r'$\sigma_\text{E}$ [\si{MeV}]',color='b')
 ax.plot(Evis,sigma_Evis,'b',linewidth=1)
