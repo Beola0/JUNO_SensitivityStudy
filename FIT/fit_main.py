@@ -5,46 +5,52 @@ from scipy import integrate, stats, optimize
 import time
 import iminuit
 from chi_squared import Chi_Squared
+from iminuit import Minuit
 
 
 def Gaussian (x,mu,sigma):
     const = math.sqrt(2*math.pi) * sigma
     return 1/const * np.exp(- np.power(x-mu,2)/2./(sigma**2)) * 1000.
 
-def chi_squared (params,f,x_data,bins):
-    #mu = params[0]
-    #sigma = params[1]
+def chi_squared (params,f,x_data,bins,sigma=''):
+
     x_fit = f(bins,*params)
-    sigma_data = np.sqrt(x_data)
+
+    if sigma == '':
+        sigma_data = np.sqrt(x_data) # poisson error
+    else:
+        sigma_data = sigma
+
     np.place(sigma_data,sigma_data<1.,1.) 
+
     appo = (x_fit - x_data)/ sigma_data
     appo = np.power(appo,2)
     return appo.sum()
 
-time_start = time.process_time_ns()
-# main program
-bins = np.arange(-5.,5.2,0.1)
+#time_start = time.process_time_ns()
+time_start_c = time.perf_counter_ns()
 
-chi_sq = Chi_Squared()
+# main program
+#bins = np.arange(-5.,5.05,0.05)
+bins = np.linspace(-5.,5.,100)
 
 # without poisson fluctuations
 
 x_asimov = Gaussian(bins,mu=0.,sigma=1.)
+params0 = np.ndarray((2,),buffer=np.array([0.1,1.2])) # mu and sigma
 
-params0 = np.ndarray((2,),buffer=np.array([0.1,1.])) # mu and sigma
+chi_sq_g = Chi_Squared(Gaussian,x_asimov,bins)
+
 res = optimize.minimize(chi_squared,x0=params0,args=(Gaussian,x_asimov,bins),method='BFGS')
+#res = optimize.minimize(chi_sq_g.chi_squared_stat,params0) #  necessario avendo seperato i due parametri mu e sigma
 x_fit = Gaussian(bins,res.x[0],res.x[1])
+m_g = Minuit(chi_sq_g.chi_squared_stat_minuit,mu=params0[0],sigma=params0[1])
 
 print('Minimization results:')
 print(res)
 
-mu = np.arange(-0.06,0.061,0.001) # M
-sigma = np.arange(0.94,1.061,0.001) # N
-chi = np.ndarray((len(sigma),len(mu))) # N * M
 
-for n in np.arange(len(sigma)):
-    for m in np.arange(len(mu)):
-        chi[n,m] = chi_squared((mu[m],sigma[n]),Gaussian,x_asimov,bins)
+
 
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
@@ -55,12 +61,20 @@ ax2.plot(bins,x_fit,'g',linewidth=1.5,label='fit')
 ax2.legend()
 ax2.grid()
 
+mu = np.arange(-0.06,0.061,0.001) # M
+sigma = np.arange(0.94,1.061,0.001) # N
+chi = np.ndarray((len(sigma),len(mu))) # N * M
+
+for n in np.arange(len(sigma)):
+    for m in np.arange(len(mu)):
+        chi[n,m] = chi_squared((mu[m],sigma[n]),Gaussian,x_asimov,bins)
+
 fig3 = plt.figure()
 ax3 = fig3.add_subplot(111)
 ax3.set_title('Contour plot')
 ax3.plot(res.x[0],res.x[1],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
-cs = ax3.contour(mu,sigma,chi,50) 
+cs = ax3.contour(mu,sigma,chi,25) 
 ax3.set_xlabel('mu')
 ax3.set_ylabel('sigma')
 cbar = fig3.colorbar(cs)
@@ -71,7 +85,7 @@ ax3.grid()
 
 # with poisson fluctuations
 
-x_poisson = np.ndarray(len(x_asimov))
+'''x_poisson = np.ndarray(len(x_asimov))
 n=0
 for x in x_asimov:
     x_poisson[n] = np.random.poisson(x,1)
@@ -89,14 +103,6 @@ print(res_p)
 print('\nMinimization results (with poisson fluctuations) - iminuit:')
 print(res_iminuit)
 
-mu_p = np.arange(-0.06,0.061,0.001) # M
-sigma_p = np.arange(0.94,1.061,0.001) # N
-chi_p = np.ndarray((len(sigma),len(mu))) # N * M
-
-for n in np.arange(len(sigma_p)):
-    for m in np.arange(len(mu_p)):
-        chi_p[n,m] = chi_squared((mu_p[m],sigma_p[n]),Gaussian,x_poisson,bins)
-
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.set_title('Dataset with poisson fluctuations')
@@ -106,12 +112,20 @@ ax.plot(bins,x_fit_p,'g',linewidth=1.,label='fit')
 ax.legend()
 ax.grid()
 
+mu_p = np.arange(-0.06,0.061,0.001) # M
+sigma_p = np.arange(0.94,1.061,0.001) # N
+chi_p = np.ndarray((len(sigma),len(mu))) # N * M
+
+for n in np.arange(len(sigma_p)):
+    for m in np.arange(len(mu_p)):
+        chi_p[n,m] = chi_squared((mu_p[m],sigma_p[n]),Gaussian,x_poisson,bins)
+
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
 ax1.set_title('Contour plot with poisson fluctuations')
 ax1.plot(res_p.x[0],res_p.x[1],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
-cs = ax1.contour(mu_p,sigma_p,chi_p,50) 
+cs = ax1.contour(mu_p,sigma_p,chi_p,25) 
 ax1.set_xlabel('mu')
 ax1.set_ylabel('sigma')
 cbar = fig1.colorbar(cs)
@@ -121,13 +135,16 @@ ax1.grid()
 fig4 = plt.figure()
 ax4 = fig4.add_subplot(111)
 ax4.set_title('Contour plot - iminuit')
+ax4.plot(m_.values[0],m_.values[1],'k.',markersize=3.)
 m_.draw_mncontour('x0','x1',nsigma=5)  
 ax4.set_xlabel('mu') 
 ax4.set_ylabel('sigma')  
-ax4.grid() 
+ax4.grid() '''
 
-time_el = time.process_time_ns()
-print('elapsed time: ' + str(time_el*10**(-6)) + ' ms')
+#time_el = time.process_time_ns()
+time_el_c = time.perf_counter_ns()
+#print('\nelapsed time: ' + str(time_el*10**(-6)) + ' ms')
+print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')
 
 
 plt.ion()
