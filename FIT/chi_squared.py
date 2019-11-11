@@ -18,7 +18,8 @@ class Chi_Squared():
             self.sigma_data = np.sqrt(data) # poisson error
         else:
             self.sigma_data = sigma
-
+        
+        # check if there are sigma = 0 
         np.place(self.sigma_data,self.sigma_data<1.,1.) 
         
 

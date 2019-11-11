@@ -12,27 +12,27 @@ def Gaussian (x,mu,sigma):
     const = math.sqrt(2*math.pi) * sigma
     return 1/const * np.exp(- np.power(x-mu,2)/2./(sigma**2)) * 1000.
 
-def chi_squared (params,f,x_data,bins,sigma=''):
-
-    x_fit = f(bins,*params)
-
-    if sigma == '':
-        sigma_data = np.sqrt(x_data) # poisson error
-    else:
-        sigma_data = sigma
-
-    np.place(sigma_data,sigma_data<1.,1.) 
-
-    appo = (x_fit - x_data)/ sigma_data
-    appo = np.power(appo,2)
-    return appo.sum()
+#def chi_squared (params,f,x_data,bins,sigma=''):
+#
+#    x_fit = f(bins,*params)
+#
+#    if sigma == '':
+#        sigma_data = np.sqrt(x_data) # poisson error
+#    else:
+#        sigma_data = sigma
+#
+#    np.place(sigma_data,sigma_data<1.,1.) 
+#
+#    appo = (x_fit - x_data)/ sigma_data
+#    appo = np.power(appo,2)
+#    return appo.sum()
 
 #time_start = time.process_time_ns()
 time_start_c = time.perf_counter_ns()
 
 # main program
-#bins = np.arange(-5.,5.05,0.05)
-bins = np.linspace(-5.,5.,100)
+bins = np.arange(-5.,5.2,0.2)
+#bins = np.linspace(-5.,5.,50)
 
 # without poisson fluctuations
 
@@ -41,15 +41,17 @@ params0 = np.ndarray((2,),buffer=np.array([0.1,1.2])) # mu and sigma
 
 chi_sq_g = Chi_Squared(Gaussian,x_asimov,bins)
 
-res = optimize.minimize(chi_squared,x0=params0,args=(Gaussian,x_asimov,bins),method='BFGS')
-#res = optimize.minimize(chi_sq_g.chi_squared_stat,params0) #  necessario avendo seperato i due parametri mu e sigma
+#res = optimize.minimize(chi_squared,x0=params0,args=(Gaussian,x_asimov,bins),method='BFGS')
+res = optimize.minimize(chi_sq_g.chi_squared_stat,params0)
 x_fit = Gaussian(bins,res.x[0],res.x[1])
 m_g = Minuit(chi_sq_g.chi_squared_stat_minuit,mu=params0[0],sigma=params0[1])
+m_g.migrad()
 
-print('Minimization results:')
+print('\nMinimization results:')
 print(res)
-
-
+print('\nMinuit results:')
+print(m_g.values)
+print(m_g.np_matrix())
 
 
 fig2 = plt.figure()
@@ -67,7 +69,8 @@ chi = np.ndarray((len(sigma),len(mu))) # N * M
 
 for n in np.arange(len(sigma)):
     for m in np.arange(len(mu)):
-        chi[n,m] = chi_squared((mu[m],sigma[n]),Gaussian,x_asimov,bins)
+        #chi[n,m] = chi_squared((mu[m],sigma[n]),Gaussian,x_asimov,bins)
+        chi[n,m] = chi_sq_g.chi_squared_stat((mu[m],sigma[n]))
 
 fig3 = plt.figure()
 ax3 = fig3.add_subplot(111)
@@ -85,16 +88,22 @@ ax3.grid()
 
 # with poisson fluctuations
 
-'''x_poisson = np.ndarray(len(x_asimov))
+x_poisson = np.ndarray(len(x_asimov))
 n=0
 for x in x_asimov:
     x_poisson[n] = np.random.poisson(x,1)
     n += 1
 
-params0_p = np.ndarray((2,),buffer=np.array([0.,1.])) # mu and sigma
-res_p = optimize.minimize(chi_squared,x0=params0_p,args=(Gaussian,x_poisson,bins),method='BFGS')
-res_iminuit = iminuit.minimize(chi_squared,x0=params0_p,args=(Gaussian,x_poisson,bins))
+chi_sq_gp = Chi_Squared(Gaussian,x_poisson,bins)
+
+params0_p = np.ndarray((2,),buffer=np.array([0.1,1.2])) # mu and sigma
+#res_p = optimize.minimize(chi_squared,x0=params0_p,args=(Gaussian,x_poisson,bins),method='BFGS')
+res_p = optimize.minimize(chi_sq_gp.chi_squared_stat,x0=params0_p,method='BFGS')
+#res_iminuit = iminuit.minimize(chi_squared,x0=params0_p,args=(Gaussian,x_poisson,bins))
+res_iminuit = iminuit.minimize(chi_sq_gp.chi_squared_stat,x0=params0_p)
 m_ = res_iminuit.minuit
+m_p = Minuit(chi_sq_gp.chi_squared_stat_minuit,mu=params0_p[0],sigma=params0_p[1]) #fix_mu = True 
+m_p.migrad()
 x_fit_p = Gaussian(bins,res_p.x[0],res_p.x[1])
 
 print('\nMinimization results (with poisson fluctuations):')
@@ -102,6 +111,10 @@ print(res_p)
 
 print('\nMinimization results (with poisson fluctuations) - iminuit:')
 print(res_iminuit)
+
+print('\nMinuit results (migrad) (with poisson fluctuations):')
+print(m_p.values)
+print(m_p.np_matrix())
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -118,7 +131,8 @@ chi_p = np.ndarray((len(sigma),len(mu))) # N * M
 
 for n in np.arange(len(sigma_p)):
     for m in np.arange(len(mu_p)):
-        chi_p[n,m] = chi_squared((mu_p[m],sigma_p[n]),Gaussian,x_poisson,bins)
+        #chi_p[n,m] = chi_squared((mu_p[m],sigma_p[n]),Gaussian,x_poisson,bins)
+        chi_p[n,m] = chi_sq_gp.chi_squared_stat((mu_p[m],sigma_p[n]))
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
@@ -136,10 +150,10 @@ fig4 = plt.figure()
 ax4 = fig4.add_subplot(111)
 ax4.set_title('Contour plot - iminuit')
 ax4.plot(m_.values[0],m_.values[1],'k.',markersize=3.)
-m_.draw_mncontour('x0','x1',nsigma=5)  
+m_p.draw_mncontour('mu','sigma',nsigma=5)  
 ax4.set_xlabel('mu') 
 ax4.set_ylabel('sigma')  
-ax4.grid() '''
+ax4.grid()
 
 #time_el = time.process_time_ns()
 time_el_c = time.perf_counter_ns()
