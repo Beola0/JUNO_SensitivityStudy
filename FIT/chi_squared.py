@@ -4,9 +4,10 @@ import math
 from scipy import integrate, stats, optimize
 import time
 import iminuit
+from test_statistic import Test_Statistic
 
 
-class Chi_Squared():
+class Chi_Squared(Test_Statistic):
     # no __init__
     def __init__ (self,f,data,bins,sigma=''):
 
@@ -39,16 +40,16 @@ class Chi_Squared():
         
         return appo.sum() '''
 
-    def chi_squared_stat(self,params): 
+    '''def chi_squared_stat(self,params): # to use with scipy.optimize.minimize()
 
         x_fit = self.f(self.bins,*params)
 
         appo = (x_fit - self.data)/ self.sigma_data
         appo = np.power(appo,2)
         
-        return appo.sum() 
+        return appo.sum() '''
 
-    def chi_squared_stat_minuit(self,mu,sigma): 
+    def chi_squared_stat_minuit(self,mu,sigma): # to use with Minuit
 
         x_fit = self.f(self.bins,mu,sigma)
 
