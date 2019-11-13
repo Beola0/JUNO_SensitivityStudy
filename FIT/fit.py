@@ -8,6 +8,8 @@ import math
 import time
 from chi_squared import Chi_Squared
 from iminuit import Minuit
+from scipy import stats
+from scipy.linalg import cholesky
 
 
 def Gaussian (x,mu,sigma):
@@ -65,6 +67,7 @@ for n in np.arange(len(sigma)):
 
 ax2 = fig.add_subplot(122)
 ax2.set_title(r'Contour plot')
+#m_g.draw_mncontour('mu','sigma')
 ax2.plot(m_g.values['mu'],m_g.values['sigma'],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
 chi_appo = chi - chi.min()
@@ -79,7 +82,7 @@ ax2.grid()
 
 ### with poisson fluctuations
 
-'''x_poisson = np.ndarray(len(x_asimov))
+x_poisson = np.ndarray(len(x_asimov))
 n=0
 for x in x_asimov:
     x_poisson[n] = np.random.poisson(x,1)
@@ -120,6 +123,7 @@ for n in np.arange(len(sigma_p)):
 
 ax4 = fig3.add_subplot(122)
 ax4.set_title(r'Contour plot (poisson fluctuations)')
+#m_p.draw_mncontour('mu','sigma',nsigma=5)  
 ax4.plot(m_p.values['mu'],m_p.values['sigma'],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
 chi_p_appo = chi_p - chi_p.min()
@@ -130,23 +134,14 @@ cbar = fig3.colorbar(cs)
 cbar.ax.set_ylabel(r'$\Delta \chi^2$')
 ax4.grid()
 
-#fig4 = plt.figure()
-#ax4 = fig4.add_subplot(111)
-#ax4.set_title(r'Contour plot' + '\n(minuit)')
-#ax4.plot(m_p.values[0],m_p.values[1],'k.',markersize=3.)
-#m_p.draw_mncontour('mu','sigma',nsigma=5)  
-#ax4.set_xlabel(r'$\mu$') 
-#ax4.set_ylabel(r'$\sigma$')  
-#ax4.grid()
-
 time_el_c = time.perf_counter_ns()
-print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')'''
+print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')
 
 
 
 ### test of mu and sigma distribution
 
-'''dim = 1000
+dim = 1000
 mu_array = np.zeros(dim)
 sigma_array = np.zeros(dim)
 
@@ -164,19 +159,20 @@ for n0 in np.arange(0,dim):
 
 fig5 = plt.figure(figsize=[12.5, 7.5])
 
+N_bins = 25
 ax5 = fig5.add_subplot(121)
 ax5.set_title(r'$\mu$ distribution')
-ax5.hist(mu_array,25,color='b',histtype='step')
+ax5.hist(mu_array,N_bins,color='b',histtype='step')
 ax5.set_xlabel(r'$\mu$')
 ax5.set_ylabel(r'N')
 ax5.grid()
 
 ax6 = fig5.add_subplot(122)
 ax6.set_title(r'$\sigma$ distribution')
-ax6.hist(sigma_array,25,color='r',histtype='step')
+ax6.hist(sigma_array,N_bins,color='r',histtype='step')
 ax6.set_xlabel(r'$\sigma$')
 ax6.set_ylabel(r'N')
-ax6.grid()'''
+ax6.grid()
 
 
 
@@ -184,8 +180,15 @@ ax6.grid()'''
 
 M = len(bins)
 V = np.full((M,M),0.)
-N_samples = 1.
+V_2 = np.full((M,M),0.)
+N_samples = 10.
+x_data_samples = np.empty((int(N_samples),M))
+R = np.full((M,M),0.)
 
+sigma_j = np.full((M),0.)
+sigma_k = np.full((M),0.)
+
+N_ = 0
 for N0 in np.arange(0,N_samples):
 
     x_poisson = np.ndarray(len(x_asimov))
@@ -195,12 +198,72 @@ for N0 in np.arange(0,N_samples):
         n += 1
 
     for j in np.arange(0,M):
-        print('j ' + str(j))
         for k in np.arange(0,M):   
-            print('k ' + str(k))
             V[j,k] += (x_poisson[j] - x_asimov[j]) * (x_poisson[k] - x_asimov[k])
 
-    V = V/N_samples
+    x_data_samples[N_,] = x_poisson
+    N_ += 1
+
+
+for j in np.arange(0,M):
+    appo = ((x_data_samples[:,j] -  x_asimov[j])**2).sum()
+    sigma_j[j] = math.sqrt(appo)
+
+for k in np.arange(0,M):
+    appo = ((x_data_samples[:,k] -  x_asimov[k])**2).sum()
+    sigma_k[k] = math.sqrt(appo)
+
+for j in np.arange(0,M):
+    for k in np.arange(0,M):   
+        s_j = (x_data_samples[:,j] - x_asimov[j])**2
+        s_j = s_j.sum()
+        s_k = (x_data_samples[:,k] - x_asimov[k])**2
+        s_k = s_k.sum()
+        V_2[j,k] = ((x_data_samples[:,j] - x_asimov[j]) * (x_data_samples[:,k] - x_asimov[k])).sum()
+        R[j,k] = V_2[j,k] / (np.sqrt(s_j) * np.sqrt(s_k))
+
+V = V/N_samples
+V_2 = V_2/N_samples
+
+
+### construction of covariance matrix (with correlation)
+
+N_samples = 100
+a = stats.norm.rvs(size=(2,N_samples))
+corr = 1.
+b =  np.ndarray((2,N_samples)) # mu and sigma correlated
+b[0,:] = a[0,:]
+b[1,:] = corr * a[0,:] + np.sqrt(1-corr**2) * a[1,:] 
+
+mu_l = b[0,:].min()
+mu_r = b[0,:].max()
+b[0,:] = (b[0,:]-mu_l) * 0.2 / (mu_r - mu_l) - 0.1
+
+sigma_l = b[1,:].min()
+sigma_r = b[1,:].max()
+b[1,:] = (b[1,:]-sigma_l) * 0.2 / (sigma_r - sigma_l) + 0.9
+
+'''N_samples = 100
+a = stats.norm.rvs(size=(2,N_samples))
+corr = 1.
+
+s_x = m_p.errors['mu'] 
+s_y = m_p.errors['sigma']
+s_xy = corr * s_x * s_y
+r_mat = np.array([[s_x**2,s_xy],
+                    [s_xy,s_y**2]])
+
+c_mat = cholesky(r_mat, lower=True)
+
+b = np.dot(c_mat,a)'''
+
+fig_ = plt.figure()
+ax_ = fig_.add_subplot(111)
+ax_.set_title(r'$\mu - \sigma$ correlation')
+ax_.plot(b[0],b[1],'b.') 
+ax_.set_xlabel(r'$\mu$')
+ax_.set_ylabel(r'$\sigma$')
+ax_.grid()
 
 
 
