@@ -21,6 +21,7 @@ time_start_c = time.perf_counter_ns()
 bins = np.arange(-5.,5.2,0.2)
 
 
+
 ### without poisson fluctuations
 
 x_asimov = Gaussian(bins,mu=0.,sigma=1.)
@@ -75,9 +76,10 @@ cbar.ax.set_ylabel(r'$\Delta \chi^2$')
 ax2.grid()
 
 
+
 ### with poisson fluctuations
 
-x_poisson = np.ndarray(len(x_asimov))
+'''x_poisson = np.ndarray(len(x_asimov))
 n=0
 for x in x_asimov:
     x_poisson[n] = np.random.poisson(x,1)
@@ -128,24 +130,23 @@ cbar = fig3.colorbar(cs)
 cbar.ax.set_ylabel(r'$\Delta \chi^2$')
 ax4.grid()
 
-'''fig4 = plt.figure()
-ax4 = fig4.add_subplot(111)
-ax4.set_title(r'Contour plot' + '\n(minuit)')
-ax4.plot(m_p.values[0],m_p.values[1],'k.',markersize=3.)
-m_p.draw_mncontour('mu','sigma',nsigma=5)  
-ax4.set_xlabel(r'$\mu$') 
-ax4.set_ylabel(r'$\sigma$')  
-ax4.grid()'''
+#fig4 = plt.figure()
+#ax4 = fig4.add_subplot(111)
+#ax4.set_title(r'Contour plot' + '\n(minuit)')
+#ax4.plot(m_p.values[0],m_p.values[1],'k.',markersize=3.)
+#m_p.draw_mncontour('mu','sigma',nsigma=5)  
+#ax4.set_xlabel(r'$\mu$') 
+#ax4.set_ylabel(r'$\sigma$')  
+#ax4.grid()
 
 time_el_c = time.perf_counter_ns()
-print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')
+print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')'''
 
-plt.ion()
-plt.show()
 
-# test of mu and sigma distribution
 
-dim = 1000
+### test of mu and sigma distribution
+
+'''dim = 1000
 mu_array = np.zeros(dim)
 sigma_array = np.zeros(dim)
 
@@ -175,10 +176,36 @@ ax6.set_title(r'$\sigma$ distribution')
 ax6.hist(sigma_array,25,color='r',histtype='step')
 ax6.set_xlabel(r'$\sigma$')
 ax6.set_ylabel(r'N')
-ax6.grid()
+ax6.grid()'''
 
 
 
+### construction of covariance matrix (without correlation)
+
+M = len(bins)
+V = np.full((M,M),0.)
+N_samples = 1.
+
+for N0 in np.arange(0,N_samples):
+
+    x_poisson = np.ndarray(len(x_asimov))
+    n=0
+    for x in x_asimov:
+        x_poisson[n] = np.random.poisson(x,1)
+        n += 1
+
+    for j in np.arange(0,M):
+        print('j ' + str(j))
+        for k in np.arange(0,M):   
+            print('k ' + str(k))
+            V[j,k] += (x_poisson[j] - x_asimov[j]) * (x_poisson[k] - x_asimov[k])
+
+    V = V/N_samples
+
+
+
+plt.ion()
+plt.show()
 
 
 
