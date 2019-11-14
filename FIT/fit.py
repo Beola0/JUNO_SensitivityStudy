@@ -9,7 +9,7 @@ import time
 from chi_squared import Chi_Squared
 from iminuit import Minuit
 from scipy import stats
-from scipy.linalg import cholesky
+#from scipy.linalg import cholesky
 
 
 def Gaussian (x,mu,sigma):
@@ -20,7 +20,7 @@ def Gaussian (x,mu,sigma):
 # MAIN PROGRAM
 
 time_start_c = time.perf_counter_ns()
-bins = np.arange(-5.,5.2,0.2)
+bins = np.arange(-3.5,3.5,0.1)
 
 
 
@@ -41,9 +41,9 @@ print('\nMinimization results:'+'\nparameters:')
 print(m_g.values)
 print('covariance matrix:')
 print(m_g.np_matrix())
-print('correlation: ' + str(rho))
+print('correlation: ' + str(rho)) 
 
-fig = plt.figure(figsize=[12.5, 7.5])
+'''fig = plt.figure(figsize=[12.5, 7.5])
 ax = fig.add_subplot(121)
 ax.set_title(r'Asimov dataset')
 entries, edges, _ = ax.hist(bins,len(bins),weights=x_asimov,color='b',histtype='step',label=r'histo')
@@ -76,11 +76,11 @@ ax2.set_xlabel(r'$\mu$')
 ax2.set_ylabel(r'$\sigma$')
 cbar = fig.colorbar(cs)
 cbar.ax.set_ylabel(r'$\Delta \chi^2$')
-ax2.grid()
+ax2.grid() '''
 
 
 
-### with poisson fluctuations
+'''### with poisson fluctuations
 
 x_poisson = np.ndarray(len(x_asimov))
 n=0
@@ -135,11 +135,11 @@ cbar.ax.set_ylabel(r'$\Delta \chi^2$')
 ax4.grid()
 
 time_el_c = time.perf_counter_ns()
-print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')
+print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')'''
 
 
 
-### test of mu and sigma distribution
+'''### test of mu and sigma distribution
 
 dim = 1000
 mu_array = np.zeros(dim)
@@ -172,16 +172,16 @@ ax6.set_title(r'$\sigma$ distribution')
 ax6.hist(sigma_array,N_bins,color='r',histtype='step')
 ax6.set_xlabel(r'$\sigma$')
 ax6.set_ylabel(r'N')
-ax6.grid()
+ax6.grid()'''
 
 
 
-### construction of covariance matrix (without correlation)
+'''### construction of covariance matrix (without correlation) for poisson fluctuations, only statistical uncertainty
 
 M = len(bins)
 V = np.full((M,M),0.)
 V_2 = np.full((M,M),0.)
-N_samples = 10.
+N_samples = 100.
 x_data_samples = np.empty((int(N_samples),M))
 R = np.full((M,M),0.)
 
@@ -224,47 +224,111 @@ for j in np.arange(0,M):
 
 V = V/N_samples
 V_2 = V_2/N_samples
+np.savetxt('cov_mat.txt',V)
+V_inv = np.linalg.inv(V) '''
+
 
 
 ### construction of covariance matrix (with correlation)
 
 N_samples = 100
 a = stats.norm.rvs(size=(2,N_samples))
-corr = 1.
+corr = 0.5
 b =  np.ndarray((2,N_samples)) # mu and sigma correlated
 b[0,:] = a[0,:]
 b[1,:] = corr * a[0,:] + np.sqrt(1-corr**2) * a[1,:] 
+mu_err = m_g.errors['mu']
+sigma_err = m_g.errors['sigma']
 
 mu_l = b[0,:].min()
 mu_r = b[0,:].max()
-b[0,:] = (b[0,:]-mu_l) * 0.2 / (mu_r - mu_l) - 0.1
+b[0,:] = (b[0,:]-mu_l) * 2*(2*mu_err) / (mu_r - mu_l) - (2*mu_err)
 
 sigma_l = b[1,:].min()
 sigma_r = b[1,:].max()
-b[1,:] = (b[1,:]-sigma_l) * 0.2 / (sigma_r - sigma_l) + 0.9
+b[1,:] = (b[1,:]-sigma_l) * 2*(2*sigma_err) / (sigma_r - sigma_l) - (2*sigma_err) + 1.
 
-'''N_samples = 100
-a = stats.norm.rvs(size=(2,N_samples))
-corr = 1.
+M = len(bins)
+X_samples_asimov = np.empty((N_samples,M))
 
-s_x = m_p.errors['mu'] 
-s_y = m_p.errors['sigma']
-s_xy = corr * s_x * s_y
-r_mat = np.array([[s_x**2,s_xy],
-                    [s_xy,s_y**2]])
+for N0 in np.arange(0,N_samples):
+    X_samples_asimov[N0,] = Gaussian(bins,mu=b[0,N0],sigma=b[1,N0])
 
-c_mat = cholesky(r_mat, lower=True)
 
-b = np.dot(c_mat,a)'''
+V = np.full((M,M),0.)
 
-fig_ = plt.figure()
-ax_ = fig_.add_subplot(111)
+#N_ = 0
+#for N0 in np.arange(0,N_samples):
+
+for j in np.arange(0,M):
+    for k in np.arange(0,M):   
+        V[j,k] = ((X_samples_asimov[:,j] - x_asimov[j]) * (X_samples_asimov[:,k] - x_asimov[k])).sum()
+
+#    N_ += 1
+V_inv = np.linalg.inv(V)
+
+
+fig_ = plt.figure(figsize=[12.5, 7.5])
+ax_ = fig_.add_subplot(121)
 ax_.set_title(r'$\mu - \sigma$ correlation')
 ax_.plot(b[0],b[1],'b.') 
 ax_.set_xlabel(r'$\mu$')
 ax_.set_ylabel(r'$\sigma$')
 ax_.grid()
+ax_2 = fig_.add_subplot(122)
+ax_2.set_title(r'covariance matrix')
+im = ax_2.imshow(V,cmap='brg',interpolation='none',origin={'lower','lower'}) 
+bar = fig_.colorbar(im)
 
+
+x_data = x_asimov
+params0 = np.ndarray((2,),buffer=np.array([0.,1.])) 
+chi_sq = Chi_Squared(Gaussian,x_data,bins,sigma='')
+chi_sq.set_invert_mat(V)
+m_c = Minuit(chi_sq.chi_squared_V,mu=params0[0],sigma=params0[1],pedantic=False)
+m_c.migrad()
+#m_c.minos()
+x_fit_c = Gaussian(bins,m_c.values['mu'],m_c.values['sigma'])
+cov_mat = m_c.np_matrix()
+rho = cov_mat[0,1] / math.sqrt(cov_mat[0,0]) / math.sqrt(cov_mat[1,1])
+
+print('\nMinimization results:'+'\nparameters:')
+print(m_c.values)
+print('covariance matrix:')
+print(m_c.np_matrix())
+print('correlation: ' + str(rho)) 
+
+fig_c = plt.figure(figsize=[12.5, 7.5])
+ax_c1 = fig_c.add_subplot(121)
+ax_c1.set_title(r'Dataset')
+entries, edges, _ = ax_c1.hist(bins,len(bins),weights=x_data,color='b',histtype='step',label=r'histo')    
+ax_c1.errorbar(bins,entries,yerr=np.sqrt(entries),fmt='r.',elinewidth=1.,capsize=1.5,markersize=3.,label=r'error bars')
+ax_c1.plot(bins,x_fit_c,'g',linewidth=1.5,label=r'fit')
+ax_c1.set_ylabel(r'N')
+ax_c1.legend()
+ax_c1.grid()
+
+# contour plot
+mu = np.arange(-0.1,0.101,0.001) # M
+sigma = np.arange(0.9,1.101,0.001) # N
+chi_c = np.ndarray((len(sigma),len(mu))) # N * M
+
+for n in np.arange(len(sigma)):
+    for m in np.arange(len(mu)):
+        chi_c[n,m] = chi_sq.chi_squared_V(mu[m],sigma[n])
+
+ax_c2 = fig_c.add_subplot(122)
+ax_c2.set_title(r'Contour plot')
+#m_g.draw_mncontour('mu','sigma')
+ax_c2.plot(m_c.values['mu'],m_c.values['sigma'],'k.',markersize=3.)
+level = np.array([1,4,9,16,25]) 
+chi_appo = chi_c - chi_c.min()
+cs = ax_c2.contour(mu,sigma,chi_appo,level) 
+ax_c2.set_xlabel(r'$\mu$')
+ax_c2.set_ylabel(r'$\sigma$')
+cbar = fig_c.colorbar(cs)
+cbar.ax.set_ylabel(r'$\Delta \chi^2$')
+ax_c2.grid()
 
 
 plt.ion()
