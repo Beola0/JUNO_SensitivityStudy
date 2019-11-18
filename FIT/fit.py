@@ -10,6 +10,7 @@ from chi_squared import Chi_Squared
 from iminuit import Minuit
 from scipy import stats
 #from scipy.linalg import cholesky
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def Gaussian (x,mu,sigma):
@@ -229,57 +230,11 @@ V_inv = np.linalg.inv(V) '''
 
 
 
-### construction of covariance matrix (with correlation)
+### correlation matrix loaded from file
 
-N_samples = 100
-a = stats.norm.rvs(size=(2,N_samples))
-corr = 0.5
-b =  np.ndarray((2,N_samples)) # mu and sigma correlated
-b[0,:] = a[0,:]
-b[1,:] = corr * a[0,:] + np.sqrt(1-corr**2) * a[1,:] 
-mu_err = m_g.errors['mu']
-sigma_err = m_g.errors['sigma']
-
-mu_l = b[0,:].min()
-mu_r = b[0,:].max()
-b[0,:] = (b[0,:]-mu_l) * 2*(2*mu_err) / (mu_r - mu_l) - (2*mu_err)
-
-sigma_l = b[1,:].min()
-sigma_r = b[1,:].max()
-b[1,:] = (b[1,:]-sigma_l) * 2*(2*sigma_err) / (sigma_r - sigma_l) - (2*sigma_err) + 1.
-
-M = len(bins)
-X_samples_asimov = np.empty((N_samples,M))
-
-for N0 in np.arange(0,N_samples):
-    X_samples_asimov[N0,] = Gaussian(bins,mu=b[0,N0],sigma=b[1,N0])
-
-
-V = np.full((M,M),0.)
-
-#N_ = 0
-#for N0 in np.arange(0,N_samples):
-
-for j in np.arange(0,M):
-    for k in np.arange(0,M):   
-        V[j,k] = ((X_samples_asimov[:,j] - x_asimov[j]) * (X_samples_asimov[:,k] - x_asimov[k])).sum()
-
-#    N_ += 1
+b = np.loadtxt('corr_mu_sigma.txt',delimiter=',',unpack=False) 
+V = np.loadtxt('corr_matrix.txt',delimiter=',',unpack=False) 
 V_inv = np.linalg.inv(V)
-
-
-fig_ = plt.figure(figsize=[12.5, 7.5])
-ax_ = fig_.add_subplot(121)
-ax_.set_title(r'$\mu - \sigma$ correlation')
-ax_.plot(b[0],b[1],'b.') 
-ax_.set_xlabel(r'$\mu$')
-ax_.set_ylabel(r'$\sigma$')
-ax_.grid()
-ax_2 = fig_.add_subplot(122)
-ax_2.set_title(r'covariance matrix')
-im = ax_2.imshow(V,cmap='brg',interpolation='none',origin={'lower','lower'}) 
-bar = fig_.colorbar(im)
-
 
 x_data = x_asimov
 params0 = np.ndarray((2,),buffer=np.array([0.,1.])) 
