@@ -228,7 +228,16 @@ V_2 = V_2/N_samples
 np.savetxt('cov_mat.txt',V)
 V_inv = np.linalg.inv(V) '''
 
+# poisson correlation matrix
+M = len(bins)
+V_p = V = np.full((M,M),0.)
+n=0
+for x0 in x_asimov:
+    V_p[n,n] = x0
+    n += 1
 
+np.place(V_p,V_p<1.,1.) 
+V_p_inv = np.linalg.inv(V_p)
 
 ### correlation matrix loaded from file
 
@@ -237,7 +246,20 @@ V = np.loadtxt('corr_matrix.txt',delimiter=',',unpack=False)
 V_inv = np.linalg.inv(V)
 
 x_data = x_asimov
+x_data_bis = Gaussian(bins,b[0,4],b[1,4])
 params0 = np.ndarray((2,),buffer=np.array([0.,1.])) 
+
+'''def fun (mu,sigma):
+    x_fit = Gaussian(bins,mu,sigma)
+    X = x_data - x_fit
+    M = len(bins)
+    appo = np.zeros(M)
+    for j in np.arange(0,M):
+        appo[j] = (V_inv[j,:] * X).sum()
+    appo1 = X * appo
+
+    return appo1.sum() '''
+
 chi_sq = Chi_Squared(Gaussian,x_data,bins,sigma='')
 chi_sq.set_invert_mat(V)
 m_c = Minuit(chi_sq.chi_squared_V,mu=params0[0],sigma=params0[1],pedantic=False)
@@ -254,31 +276,36 @@ print(m_c.np_matrix())
 print('correlation: ' + str(rho)) 
 
 fig_c = plt.figure(figsize=[12.5, 7.5])
+fig_c.suptitle(r'Dataset with mu-sigma correlation')
 ax_c1 = fig_c.add_subplot(121)
 ax_c1.set_title(r'Dataset')
 entries, edges, _ = ax_c1.hist(bins,len(bins),weights=x_data,color='b',histtype='step',label=r'histo')    
-ax_c1.errorbar(bins,entries,yerr=np.sqrt(entries),fmt='r.',elinewidth=1.,capsize=1.5,markersize=3.,label=r'error bars')
+#x_c1.errorbar(bins,entries,yerr=np.sqrt(entries),fmt='r.',elinewidth=1.,capsize=1.5,markersize=3.,label=r'error bars')
 ax_c1.plot(bins,x_fit_c,'g',linewidth=1.5,label=r'fit')
 ax_c1.set_ylabel(r'N')
 ax_c1.legend()
-ax_c1.grid()
+ax_c1.grid() 
 
 # contour plot
-mu = np.arange(-0.1,0.101,0.001) # M
-sigma = np.arange(0.9,1.101,0.001) # N
+mu = np.arange(-0.03,0.0301,0.0002) # M
+sigma = np.arange(0.965,1.0351,0.0002) # N
+#mu = np.arange(-0.01,0.0115,0.0005) # M
+#sigma = np.arange(0.993,1.0075,0.0005) # N
 chi_c = np.ndarray((len(sigma),len(mu))) # N * M
 
 for n in np.arange(len(sigma)):
     for m in np.arange(len(mu)):
+        #chi_c[n,m] = fun(mu[m],sigma[n])
         chi_c[n,m] = chi_sq.chi_squared_V(mu[m],sigma[n])
 
 ax_c2 = fig_c.add_subplot(122)
 ax_c2.set_title(r'Contour plot')
-#m_g.draw_mncontour('mu','sigma')
+#m_c.draw_mncontour('mu','sigma')
 ax_c2.plot(m_c.values['mu'],m_c.values['sigma'],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
 chi_appo = chi_c - chi_c.min()
-cs = ax_c2.contour(mu,sigma,chi_appo,level) 
+cs = ax_c2.contourf(mu,sigma,chi_appo,level) 
+#ax_c2.contour(mu, sigma, chi_appo, cs.levels, colors='k')
 ax_c2.set_xlabel(r'$\mu$')
 ax_c2.set_ylabel(r'$\sigma$')
 cbar = fig_c.colorbar(cs)

@@ -71,10 +71,16 @@ class Chi_Squared(Test_Statistic):
         x_fit = self.f(self.bins,mu,sigma)
         X = self.x_data - x_fit
 
-        appo = np.dot(self.V_inv,X)
-        appo1 = np.dot(X,appo)
+        M = len(self.bins)
+        appo = np.zeros(M)
+        for j in np.arange(0,M):
+            appo[j] = (self.V_inv[j,:] * X).sum()
+        appo1 = X * appo
 
-        return appo1
+        #appo = np.dot(self.V_inv,X)
+        #appo1 = np.dot(X,appo)
+
+        return appo1.sum()
 
 
 

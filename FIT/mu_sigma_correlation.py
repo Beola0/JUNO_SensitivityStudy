@@ -19,7 +19,7 @@ x_asimov = Gaussian(bins,mu=0.,sigma=1.)
 
 ### construction of covariance matrix (with mu-sigma correlation)
 
-N_samples = 100
+N_samples = 200
 a = stats.norm.rvs(size=(2,N_samples))
 corr = 0.5
 b =  np.ndarray((2,N_samples)) # mu and sigma correlated
@@ -31,10 +31,10 @@ sigma_err = 0.007
 # rescaling the normal random variables
 mu_l = b[0,:].min()
 mu_r = b[0,:].max()
-b[0,:] = (b[0,:]-mu_l) * 2*(1*mu_err) / (mu_r - mu_l) - (1*mu_err)
+b[0,:] = (b[0,:]-mu_l) * 2*(20*mu_err) / (mu_r - mu_l) - (20*mu_err)
 sigma_l = b[1,:].min()
 sigma_r = b[1,:].max()
-b[1,:] = (b[1,:]-sigma_l) * 2*(1*sigma_err) / (sigma_r - sigma_l) - (1*sigma_err) + 1.
+b[1,:] = (b[1,:]-sigma_l) * 2*(20*sigma_err) / (sigma_r - sigma_l) - (20*sigma_err) + 1.
 
 np.savetxt('corr_mu_sigma.txt',b,delimiter=',')
 
@@ -58,7 +58,7 @@ np.savetxt('corr_matrix.txt',V,delimiter=',')
 
 # plot of correlated parameter
 fig, axScatter = plt.subplots(figsize=(8., 6.5))
-fig.suptitle(r'$\mu - \sigma$ correlation')
+fig.suptitle(r'$\mu - \sigma$ correlation = %.2f' % (corr))
 axScatter.scatter(b[0], b[1], s=10., c='b', marker='.')
 axScatter.set_aspect(1.)
 axScatter.set_xlabel(r'$\mu$')
@@ -69,6 +69,7 @@ axHisty = divider.append_axes("right", 1.7, pad=0.1, sharey=axScatter)
 plt.setp(axHistx.get_xticklabels() + axHisty.get_yticklabels(), visible=False)
 axHistx.hist(b[0],bins=10,color='b',histtype='step')
 axHisty.hist(b[1],bins=10,color='b',orientation='horizontal',histtype='step')
+fig.savefig('mu_sigma_corr.pdf', format='pdf')
 plt.draw()
 
 # plot of the covariance matrix
@@ -77,6 +78,7 @@ ax_mat = fig_mat.add_subplot(111)
 ax_mat.set_title(r'Covariance matrix')
 im = ax_mat.imshow(V,cmap='brg',interpolation='none',origin={'lower','lower'}) 
 bar = fig_mat.colorbar(im)
+fig_mat.savefig('cov_mat.pdf', format='pdf')
 
 
 plt.ion()
