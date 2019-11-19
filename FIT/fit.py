@@ -4,7 +4,7 @@ sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes')
 import latex
 import matplotlib.pyplot as plt
 import numpy as np
-import math
+import math, scipy
 import time
 from chi_squared import Chi_Squared
 from iminuit import Minuit
@@ -21,7 +21,7 @@ def Gaussian (x,mu,sigma):
 # MAIN PROGRAM
 
 time_start_c = time.perf_counter_ns()
-bins = np.arange(-3.5,3.5,0.1)
+bins = np.arange(-2.5,2.6,0.1)
 
 
 
@@ -72,7 +72,7 @@ ax2.set_title(r'Contour plot')
 ax2.plot(m_g.values['mu'],m_g.values['sigma'],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
 chi_appo = chi - chi.min()
-cs = ax2.contour(mu,sigma,chi_appo,level) 
+cs = ax2.contourf(mu,sigma,chi_appo,level) 
 ax2.set_xlabel(r'$\mu$')
 ax2.set_ylabel(r'$\sigma$')
 cbar = fig.colorbar(cs)
@@ -128,19 +128,19 @@ ax4.set_title(r'Contour plot (poisson fluctuations)')
 ax4.plot(m_p.values['mu'],m_p.values['sigma'],'k.',markersize=3.)
 level = np.array([1,4,9,16,25]) 
 chi_p_appo = chi_p - chi_p.min()
-cs = ax4.contour(mu_p,sigma_p,chi_p_appo,level) 
+cs = ax4.contourf(mu_p,sigma_p,chi_p_appo,level) 
 ax4.set_xlabel(r'$\mu$')
 ax4.set_ylabel(r'$\sigma$')
 cbar = fig3.colorbar(cs)
 cbar.ax.set_ylabel(r'$\Delta \chi^2$')
-ax4.grid()
+ax4.grid() '''
 
-time_el_c = time.perf_counter_ns()
-print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms')'''
+#time_el_c = time.perf_counter_ns()
+#print('\nelapsed time: ' + str(time_el_c*10**(-6)) + ' ms') 
 
 
 
-'''### test of mu and sigma distribution
+'''### test of mu and sigma distribution obtained from the minimization of 1000 samples with Poisson fluctuations
 
 dim = 1000
 mu_array = np.zeros(dim)
@@ -230,13 +230,13 @@ V_inv = np.linalg.inv(V) '''
 
 # poisson correlation matrix
 M = len(bins)
-V_p = V = np.full((M,M),0.)
+V_p = np.full((M,M),0.)
 n=0
 for x0 in x_asimov:
     V_p[n,n] = x0
     n += 1
 
-np.place(V_p,V_p<1.,1.) 
+#np.place(V_p,np.diag(V_p)<1.,1.) 
 V_p_inv = np.linalg.inv(V_p)
 
 ### correlation matrix loaded from file
@@ -287,8 +287,12 @@ ax_c1.legend()
 ax_c1.grid() 
 
 # contour plot
-mu = np.arange(-0.03,0.0301,0.0002) # M
-sigma = np.arange(0.965,1.0351,0.0002) # N
+mu = np.arange(-0.1,0.101,0.001) # M
+sigma = np.arange(0.9,1.101,0.001) # N
+mu = np.arange(-0.13,0.132,0.002) # M
+sigma = np.arange(0.87,1.132,0.002) # N
+#mu = np.arange(-0.06,0.0605,0.0005) # M
+#sigma = np.arange(0.94,1.0605,0.0005) # N
 #mu = np.arange(-0.01,0.0115,0.0005) # M
 #sigma = np.arange(0.993,1.0075,0.0005) # N
 chi_c = np.ndarray((len(sigma),len(mu))) # N * M

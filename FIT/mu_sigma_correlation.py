@@ -14,7 +14,7 @@ def Gaussian (x,mu,sigma):
     return 1/const * np.exp(- np.power(x-mu,2)/2./(sigma**2)) * 1000.
 
 
-bins = np.arange(-3.5,3.5,0.1)
+bins = np.arange(-2.5,2.6,0.1)
 x_asimov = Gaussian(bins,mu=0.,sigma=1.)
 
 ### construction of covariance matrix (with mu-sigma correlation)
@@ -58,7 +58,7 @@ np.savetxt('corr_matrix.txt',V,delimiter=',')
 
 # plot of correlated parameter
 fig, axScatter = plt.subplots(figsize=(8., 6.5))
-fig.suptitle(r'$\mu - \sigma$ correlation = %.2f' % (corr))
+fig.suptitle(r'$\mu - \sigma$ correlation, $\rho$ = %.2f' % (corr))
 axScatter.scatter(b[0], b[1], s=10., c='b', marker='.')
 axScatter.set_aspect(1.)
 axScatter.set_xlabel(r'$\mu$')
@@ -75,7 +75,7 @@ plt.draw()
 # plot of the covariance matrix
 fig_mat = plt.figure()
 ax_mat = fig_mat.add_subplot(111)
-ax_mat.set_title(r'Covariance matrix')
+ax_mat.set_title(r'Covariance matrix - $\rho$ = %.2f' % (corr))
 im = ax_mat.imshow(V,cmap='brg',interpolation='none',origin={'lower','lower'}) 
 bar = fig_mat.colorbar(im)
 fig_mat.savefig('cov_mat.pdf', format='pdf')
