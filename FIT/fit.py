@@ -11,6 +11,7 @@ from iminuit import Minuit
 from scipy import stats
 #from scipy.linalg import cholesky
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from numpy import linalg as LA
 
 
 def Gaussian (x,mu,sigma):

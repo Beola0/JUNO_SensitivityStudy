@@ -7,6 +7,7 @@ import numpy as np
 import math
 from scipy import stats
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from numpy import linalg as LA
 
 
 def Gaussian (x,mu,sigma):
@@ -19,7 +20,7 @@ x_asimov = Gaussian(bins,mu=0.,sigma=1.)
 
 ### construction of covariance matrix (with mu-sigma correlation)
 
-N_samples = 200
+N_samples = 5000
 a = stats.norm.rvs(size=(2,N_samples))
 corr = 0.5
 b =  np.ndarray((2,N_samples)) # mu and sigma correlated
@@ -31,26 +32,34 @@ sigma_err = 0.007
 # rescaling the normal random variables
 mu_l = b[0,:].min()
 mu_r = b[0,:].max()
-b[0,:] = (b[0,:]-mu_l) * 2*(20*mu_err) / (mu_r - mu_l) - (20*mu_err)
+b[0,:] = (b[0,:]-mu_l) * 2*(10*mu_err) / (mu_r - mu_l) - (10*mu_err)
 sigma_l = b[1,:].min()
 sigma_r = b[1,:].max()
-b[1,:] = (b[1,:]-sigma_l) * 2*(20*sigma_err) / (sigma_r - sigma_l) - (20*sigma_err) + 1.
+b[1,:] = (b[1,:]-sigma_l) * 2*(10*sigma_err) / (sigma_r - sigma_l) - (10*sigma_err) + 1.
 
 np.savetxt('corr_mu_sigma.txt',b,delimiter=',')
 
-# generation of 100 samples
+fig_ = plt.figure()
+ax_ = fig_.add_subplot(111)
+# generation of N samples
 M = len(bins)
-X_samples_asimov = np.empty((N_samples,M))
+X_samples_asimov = np.empty((M,N_samples))
+X_bins = np.empty((M,N_samples))
 for N0 in np.arange(0,N_samples):
-    X_samples_asimov[N0,] = Gaussian(bins,mu=b[0,N0],sigma=b[1,N0])
+    X_samples_asimov[:,N0] = Gaussian(bins,mu=b[0,N0],sigma=b[1,N0])
+    #X_bins[:,N0] = bins
+    ax_.hist(bins,M,weights=X_samples_asimov[:,N0],histtype='step')
+    
+#ax_.hist(X_bins,M,weights=X_samples_asimov,histtype='step',stacked=True, fill=False)
 
 # construction of the covariance matric
-V = np.full((M,M),0.)
+V = np.zeros((M,M),dtype='float32')
 for j in np.arange(0,M):
     for k in np.arange(0,M):   
         # sum over samples
-        V[j,k] = ((X_samples_asimov[:,j] - x_asimov[j]) * (X_samples_asimov[:,k] - x_asimov[k])).sum()
+        V[j,k] = ((X_samples_asimov[j,:] - x_asimov[j]) * (X_samples_asimov[k,:] - x_asimov[k])).sum()
 
+V = V/N_samples
 # inversion of the covariance matrix
 V_inv = np.linalg.inv(V)
 
