@@ -4,13 +4,14 @@ from oscillation import Oscillation_Prob
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
     def __init__(self,t12,m21,t13_N,m3l_N,t13_I,m3l_I):
         Reactor_Spectrum.__init__(self)
         Oscillation_Prob.__init__(self,t12,m21,t13_N,m3l_N,t13_I,m3l_I)
 
-    def osc_spectrum(self,E,ordering,plot_this=False):
+    def osc_spectrum(self,E,ordering,plot_this=False,plot_un=False):
 
         # uses methods of parent classes 
         Reactor_Spectrum.unosc_spectrum(self,E,plot_this=False)
@@ -36,14 +37,16 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
             if ordering == 1 or ordering == 0: # NO
 
-                ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
+                if plot_un:
+                    ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
                 ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_N.pdf',format='pdf',transparent=True)
 
             if ordering == -1: # IO
 
-                ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
+                if plot_un:
+                    ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
                 ax.plot(E,self.norm_osc_spect_I,'r',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_I.pdf',format='pdf',transparent=True)

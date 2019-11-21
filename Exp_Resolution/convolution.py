@@ -12,7 +12,7 @@ class Convolution ():
         appo = 1/const/sigma * np.exp(- np.power(x,2)/2./(sigma**2))
         return appo
 
-    # convolution of f with a gaussian in the range E
+    ### convolution of a function f with a gaussian in the range E
 
     # using np.convolve()
     def np_conv(self,f,E,sigma='',a='',b='',plot_this=False): 
@@ -58,10 +58,12 @@ class Convolution ():
 
 
     # using a numerical method: numerical convolution (over Evis)
-    def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False):
+    # give sigma OR (a and b)
+    def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False):
 
         Evis = E - 0.8
 
+        # gaussian with fixed or given width
         if sigma != '':
 
             self.conv_num = np.zeros(len(Evis))
@@ -69,10 +71,10 @@ class Convolution ():
             for E0 in Evis:
                 appo = self.Gaussian(Evis-E0,sigma)
                 prod = appo * f
-                #self.conv_num[n] = prod.sum() # da sostituire con integrale simpson
-                self.conv_num[n] = integrate.simps(prod,Evis) # da sostituire con integrale simpson
+                self.conv_num[n] = integrate.simps(prod,Evis) 
                 n += 1
-            
+
+        # gaussian with variable width, set by a and b 
         if a != '' or b != '':
         
             rad = a**2 / Evis + b**2
@@ -83,21 +85,10 @@ class Convolution ():
             for E0 in Evis:
                 appo = self.Gaussian(Evis-E0,sigma_Evis)
                 prod = appo * f
-                #self.conv_num[n] = prod.sum() # da sostituire con integrale simpson
-                self.conv_num[n] = integrate.simps(prod,Evis) # da sostituire con integrale simpson
+                self.conv_num[n] = integrate.simps(prod,Evis) 
                 n += 1
 
         if plot_this:
-
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ax.plot(Evis,f,'b',linewidth=1,label='Unconvolved spectrum')
-            ax.set_xlabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
-            ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
-            ax.set_ylim(-0.005,0.095)
-            ax.set_title(r'Starting spectrum')
-            ax.grid()
-            ax.legend()
 
             fig1 = plt.figure()
             ax1 = fig1.add_subplot(111)
@@ -108,6 +99,18 @@ class Convolution ():
             ax1.set_title(r'Numerical convolution with a Gaussian' + '\nwith variable width')
             ax1.grid()
             ax1.legend()
+
+        if plot_start:
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            ax.plot(Evis,f,'b',linewidth=1,label='Unconvolved spectrum')
+            ax.set_xlabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
+            ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
+            ax.set_ylim(-0.005,0.095)
+            ax.set_title(r'Starting spectrum')
+            ax.grid()
+            ax.legend()
 
         return self.conv_num        
 

@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-
-class Oscillation_Prob: # survival probability
+### survival probability
+class Oscillation_Prob: 
 
     def __init__(self,t12,m21,t13_N,m3l_N,t13_I,m3l_I):
         self.baseline = 52.5 # [km], fixed for now
@@ -20,14 +20,15 @@ class Oscillation_Prob: # survival probability
         self.deltam_3l_I = m3l_I # [eV^2]
 
 
-    # this function evaluates the oscillatory term
+    ### this function evaluates the oscillatory term
     def sin2 (self,x,dm2): 
         appo = 1.27 * dm2 * x  # x in [m/MeV]
         return np.power(np.sin(appo),2)
 
 
-    # this function evalutates the survival prob as function of L/E and E 
-    def eval_prob(self,E,ordering,plot_this=False): # formula from PRD 78, 2008, Chinese
+    ### this function evalutates the survival prob as function of L/E and E 
+    ### formula from PRD 78, 2008, Chinese (https://arxiv.org/abs/0807.3203) 
+    def eval_prob(self,E,ordering,plot_this=False): 
 
         if (ordering < -1) or (ordering > 1):
             print('Error: use 1 for NO, -1 for IO, 0 for both')
@@ -100,6 +101,9 @@ class Oscillation_Prob: # survival probability
 
 
 
+    ### evaluation of the survival probability with the same formula as above written in an other way
+    ### see JHEP05(2013)131, eq. (2.6), Japanese (https://arxiv.org/abs/1210.8141)
+
     def sin (self,x,dm2): 
         appo = 1.27 * dm2 * x  # x in [m/MeV]
         return np.sin(appo)
@@ -108,8 +112,7 @@ class Oscillation_Prob: # survival probability
         appo = 1.27 * dm2 * x  # x in [m/MeV]
         return np.cos(appo)
 
-    # this function evalutates the survival prob as function of L/E and E 
-    def eval_prob_jhep(self,E,ordering,plot_this=False): # formula from JHEP05(2013)131, Japanese
+    def eval_prob_jhep(self,E,ordering,plot_this=False):
 
         if (ordering < -1) or (ordering > 1):
             print('Error: use 1 for NO, -1 for IO, 0 for both')
