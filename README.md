@@ -13,26 +13,26 @@ To obtain other plots, change from 'plot_this=False' to 'plot_this=True' where n
 Brief description of the content of this repository.
 
 Reactor: 
-reactor.py contains the class Reactor.
+'reactor.py' contains the class Reactor.
 This class has methods to create the reactor's flux, the IBD cross section and the reactor's spectrum.
 
 Oscillation: 
-oscillation.py contains the class Oscillation_Prob.
+'oscillation.py' contains the class Oscillation_Prob.
 This class has a method to obtain the survival probability both as a function of L/E and of E.
 
 Spectrum: 
-spectrum.py contains the class Oscillated_Spectrum which has Reactor and Oscillation_Prob as parent classes.
+'spectrum.py' contains the class Oscillated_Spectrum which has Reactor and Oscillation_Prob as parent classes.
 This class has a method to obtain the oscillated spectrum without energy resolution.
 
 Exp_resolution: 
-- convolution.py contains the class Convolution.
+- 'convolution.py' contains the class Convolution.
 This class has a method which executes the numerical convolution of a funciont f with a gaussian of fixed or variable width.
 It is used to introduce the finite experimental resolution in the oscillated spectrum.
 (It will be included as a method in the class Oscillated_Spectrum)
-- resolution.py plots the energy resolution as a function of energy for given a and b
-- 3d_graph.py plots a 3-dimensional graphical representation of the convolution
+- 'resolution.py' plots the energy resolution as a function of energy for given a and b
+- '3d_graph.py' plots a 3-dimensional graphical representation of the convolution
 
-latex.py is necessary to use LaTeX in the plots
+'latex.py' is necessary to use LaTeX in the plots
 
 Please ignore 'test_main.py' and the directory named 'prova'.
 Please ignore also the directory named 'FIT' since the implemention is not ready yet.
