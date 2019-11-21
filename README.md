@@ -1,12 +1,13 @@
 # JUNO_codes
  
-Thesis title: Sensitivity study to the neutrino mass hierarchy in the JUNO experiment.
+Sensitivity study to the neutrino mass hierarchy in the JUNO experiment.
 
 To run the codes, copy the entire content of the repository except for the file 'test_main.py' and the directories 'prova' and 'FIT'.
 Change the paths in the lines 2-5 of the file 'main.py'. For example: sys.path.insert(0,'<yourpath>/JUNO_codes/Reactor').
 Run 'ipython main.py -i' in your shell. 
 A plot of the antineutrino spectrum with finite energy resolution should be returned (it may take a little since it is done via numerical convolution).
 To obtain other plots, change from 'plot_this=False' to 'plot_this=True' where necessary in 'main.py' (see the file for more details).
+
 
 
 Brief description of the content of this repository.
@@ -33,6 +34,6 @@ It is used to introduce the finite experimental resolution in the oscillated spe
 
 latex.py is necessary to use LaTeX in the plots
 
-Please ignore test_main.py and the directory named 'prova'.
+Please ignore 'test_main.py' and the directory named 'prova'.
 Please ignore also the directory named 'FIT' since the implemention is not ready yet.
 
