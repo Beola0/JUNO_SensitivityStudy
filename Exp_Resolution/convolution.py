@@ -15,7 +15,7 @@ class Convolution ():
     ### convolution of a function f with a gaussian in the range E
 
     # using np.convolve()
-    def np_conv(self,f,E,sigma='',a='',b='',plot_this=False): 
+    def np_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False): 
 
         Evis = E - 0.8
 
@@ -36,15 +36,6 @@ class Convolution ():
 
         if plot_this:
 
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ax.plot(Evis,f,'b',linewidth=1,label='Unconvolved spectrum')
-            ax.set_xlabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
-            ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
-            ax.set_title(r'Starting spectrum')
-            ax.grid()
-            ax.legend()
-
             fig1 = plt.figure()
             ax1 = fig1.add_subplot(111)
             ax1.plot(Evis,self.conv_np,'b',linewidth=1,label='Convolved spectrum')
@@ -54,11 +45,22 @@ class Convolution ():
             ax1.grid()
             ax1.legend()
 
+        if plot_start:
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            ax.plot(Evis,f,'b',linewidth=1,label='Unconvolved spectrum')
+            ax.set_xlabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
+            ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
+            ax.set_title(r'Starting spectrum')
+            ax.grid()
+            ax.legend()
+
         return self.conv_np
 
 
     # using a numerical method: numerical convolution (over Evis)
-    # give sigma OR (a and b)
+    # need (sigma) OR (a or b)
     def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False):
 
         Evis = E - 0.8

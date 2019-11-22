@@ -27,7 +27,7 @@ class Oscillation_Prob:
 
 
     ### this function evalutates the survival prob as function of L/E and E 
-    ### formula from PRD 78, 2008, Chinese (https://arxiv.org/abs/0807.3203) 
+    ### formula from PRD 78, 2008, Chinese, https://arxiv.org/abs/0807.3203, eq. (4)
     def eval_prob(self,E,ordering,plot_this=False): 
 
         if (ordering < -1) or (ordering > 1):

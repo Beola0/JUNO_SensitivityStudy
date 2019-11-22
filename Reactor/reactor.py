@@ -18,8 +18,9 @@ class Reactor_Spectrum:
         self.f238u = 0.07
         self.f241pu = 0.05
 
-    # this function evaluates the antineutrino flux
-    def flux(self,E,plot_this=False): # E is an array of energies
+    ### this method evaluates the antineutrino flux
+    ### for further reference: http://inspirehep.net/record/25814/ and https://arxiv.org/abs/0807.3203, eq. (2)
+    def flux(self,E,plot_this=False): 
         u235 = reactor_exp(E,0.870,0.160,0.091)
         pu239 = reactor_exp(E,0.896,0.239,0.0981)
         u238 = reactor_exp(E,0.976,0.162,0.0790)
@@ -49,7 +50,8 @@ class Reactor_Spectrum:
 
         return self.tot_flux
 
-    # this function evaluates the IBD cross section
+    ### this method evaluates the IBD cross section
+    ### for further reference: Strumia, Vissani, https://arxiv.org/abs/astro-ph/0302055, eq. (25)
     def cross_section(self,E,plot_this=False): # E is the neutrino's energy
         alpha = -0.07056
         beta = 0.02018
@@ -84,7 +86,7 @@ class Reactor_Spectrum:
 
         return self.x_sec
 
-    # this function combines flux and cross section to obtain the spectrum
+    # this method combines the flux and the cross section to obtain the spectrum
     def unosc_spectrum(self,E,plot_this=False):
         self.flux(E,plot_this=False)
         self.cross_section(E,plot_this=False)
