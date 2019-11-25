@@ -54,32 +54,31 @@ spectrum = Oscillated_Spectrum(t12=0.310, m21=7.39*10**(-5), t13_N=0.02240, m3l_
 spectrum_N, spectrum_I = spectrum.osc_spectrum(E,-1,plot_this=False,plot_un=False) # 1 for NO, -1 for IO, 0 for both (plotting)
 
 
-### oscillated spectrum with experimental resolution via numerical convolution, class Convolution
+
+### oscillated spectrum with experimental resolution via numerical convolution, class Convolution used in the class Spectrum
 ### set plot_this=True to plot the numerical convolution
 ### set plot_start=True to plot the starting spectrum
 ### for further reference see https://arxiv.org/abs/1210.8141
 
-a = 0.029
-b = 0.008
-convol = Convolution()
-conv_num_N = convol.numerical_conv(spectrum_N,E,a=a,b=b,plot_this=False,plot_start=False)
-conv_num_I = convol.numerical_conv(spectrum_I,E,a=a,b=b,plot_this=False,plot_start=False)
+a = 0.029 # stochastic term
+b = 0.008 # constant term 
+resol_spect_N, resol_spect_I = spectrum.resol_spectrum (E,a,b,0,plot_this=False) # 1 for NO, -1 for IO, 0 for both (plotting)
 
 #elapsed_time = time.process_time_ns() - time_start
 #print('elapsed time: '+str(elapsed_time*10**(-6))+' ms')
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(E-0.8,conv_num_N,'b',linewidth=1,label='NO')
-ax.plot(E-0.8,conv_num_I,'r--',linewidth=1,label='IO')
+ax.plot(E-0.8,resol_spect_N,'b',linewidth=1,label='NO')
+ax.plot(E-0.8,resol_spect_I,'r--',linewidth=1,label='IO')
 ax.set_xlabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
 ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
 ax.set_ylim(-0.005,0.095)
-ax.set_title(r'Antineutrino spectrum with finite energy resolution' + '\n(numerical convolution)')
+ax.set_title(r'Antineutrino spectrum' + '\nwith finite energy resolution')
 ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax.legend()
 ax.grid()
-#fig.savefig('osc_spectrum_w_resolution_num.pdf',format='pdf',transparent=True) 
+#fig.savefig('resol_spectrum.pdf',format='pdf',transparent=True) 
 
 plt.ion()
 plt.show()
