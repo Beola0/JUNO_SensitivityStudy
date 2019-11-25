@@ -28,8 +28,7 @@ This class has a method to obtain the oscillated spectrum without including ener
 * Exp_resolution: 
   * 'convolution.py' contains the class ```Convolution```.
 This class has a method which executes the numerical convolution of a function f with a gaussian of fixed or variable width.
-It is used to introduce the finite experimental resolution in the oscillated spectrum.
-(It will be included in a method in the class ```Oscillated_Spectrum```)
+It is used in a method of the class ```Oscillated_Spectrum``` to introduce the finite experimental resolution in the oscillated spectrum
   * 'resolution.py' plots the energy resolution as a function of energy for given stochastic term, _a_, and constant term, _b_
   * '3d_graph.py' plots a 3-dimensional graphical representation of the convolution
 
