@@ -1,6 +1,4 @@
-# JUNO_codes
- 
-Sensitivity study to the neutrino mass hierarchy in the JUNO experiment.
+# Sensitivity study to the neutrino mass hierarchy in the JUNO experiment
 
 ## How to run the codes
 
