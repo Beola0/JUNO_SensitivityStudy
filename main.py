@@ -1,12 +1,15 @@
+import os
+cwd = os.getcwd()
+
 import sys
-#sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Reactor')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Oscillation')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Spectrum')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Exp_Resolution')
+sys.path.insert(0,cwd+'/Reactor')
+sys.path.insert(0,cwd+'/Oscillation')
+sys.path.insert(0,cwd+'/Spectrum')
+sys.path.insert(0,cwd+'/Exp_Resolution')
 
 import latex 
-#from reactor import Reactor_Spectrum 
-from Reactor.reactor import Reactor_Spectrum
+from reactor import Reactor_Spectrum 
+#from Reactor.reactor import Reactor_Spectrum
 from oscillation import Oscillation_Prob 
 from spectrum import Oscillated_Spectrum
 from convolution import Convolution
@@ -79,7 +82,8 @@ ax.set_title(r'Antineutrino spectrum' + '\nwith finite energy resolution')
 ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax.legend()
 ax.grid()
-fig.savefig('spectrum.pdf',format='pdf',transparent=True) 
+fig.savefig('oscillated_spectrum.pdf',format='pdf',transparent=True) 
+print('Saved plot in oscillated_spectrum.pdf')
 
 plt.ion()
 plt.show()

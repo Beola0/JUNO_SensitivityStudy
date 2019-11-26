@@ -72,6 +72,7 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
         ### class Convolution
         conv = Convolution()
+        print('...adding experimental resolution via numerical convolution...')
         self.resol_N = conv.numerical_conv(self.norm_osc_spect_N,E,a=a,b=b)
         self.resol_I = conv.numerical_conv(self.norm_osc_spect_I,E,a=a,b=b)
 
