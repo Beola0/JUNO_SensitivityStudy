@@ -82,7 +82,7 @@ ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\perce
 ax.legend()
 ax.grid()
 fig.savefig('oscillated_spectrum.pdf',format='pdf',transparent=True) 
-print('Saved plot in oscillated_spectrum.pdf')
+print('The plot has been saved in oscillated_spectrum.pdf')
 
 plt.ion()
 plt.show()
