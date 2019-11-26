@@ -44,6 +44,7 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_N.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in Spectrum/osc_spectrum_N.pdf\n')
 
             if ordering == -1: # IO
 
@@ -52,12 +53,14 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.plot(E,self.norm_osc_spect_I,'r',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_I.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in Spectrum/osc_spectrum_I.pdf\n')
 
             if ordering == 0: # IO
 
                 ax.plot(E,self.norm_osc_spect_I,'r--',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum.pdf', format='pdf', transparent=True)
+                print('\nThe plot has been saved in Spectrum/osc_spectrum.pdf\n')
 
         return self.norm_osc_spect_N, self.norm_osc_spect_I
 
@@ -93,18 +96,21 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.plot(E-0.8,self.resol_N,'b',linewidth=1,label='NO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum_N.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in Spectrum/resol_spectrum_N.pdf\n')
 
             if ordering == -1: # IO
 
                 ax.plot(E-0.8,self.resol_I,'r',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum_I.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in Spectrum/resol_spectrum_I.pdf\n')
 
             if ordering == 0: # IO
 
                 ax.plot(E-0.8,self.resol_I,'r--',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum.pdf', format='pdf', transparent=True)
+                print('\nThe plot has been saved in Spectrum/resol_spectrum.pdf\n')
 
         return self.resol_N, self.resol_I
 

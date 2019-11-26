@@ -46,6 +46,7 @@ ax1.tick_params(axis='y', labelcolor='r')
 fig.tight_layout()
 
 fig.savefig('resolution.pdf',format='pdf',transparent=True)
+print('The plot has been saved in resolution.pdf')
 
 plt.ion()
 plt.show()

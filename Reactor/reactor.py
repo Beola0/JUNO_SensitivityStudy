@@ -47,6 +47,7 @@ class Reactor_Spectrum:
             ax.set_title(r'Reactor antineutrino flux')
 
             plt.savefig('Reactor/flux.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in Reactor/flux.pdf\n')
 
         return self.tot_flux
 
@@ -83,6 +84,7 @@ class Reactor_Spectrum:
             ax.set_title(r'IBD cross section')
 
             plt.savefig('Reactor/cross_section.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in Reactor/cross_section.pdf\n')
 
         return self.x_sec
 
@@ -109,6 +111,7 @@ class Reactor_Spectrum:
             ax.set_title(r'Unoscillated reactor spectrum')
 
             plt.savefig('Reactor/unoscillated_spectrum.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in Reactor/unoscillated_spectrum.pdf\n')
 
         return self.norm_spectrum_un
 

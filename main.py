@@ -31,7 +31,7 @@ E = np.arange(1.806,10.01,0.001) # in MeV
 react = Reactor_Spectrum()
 flux = react.flux(E,plot_this=False) 
 xsec = react.cross_section(E,plot_this=False)
-reactor_spectrum = react.unosc_spectrum(E,plot_this=False)
+reactor_spectrum = react.unosc_spectrum(E,plot_this=True)
 
 
 
@@ -54,7 +54,7 @@ prob_N, prob_I = prob.eval_prob(E,0,plot_this=False) # 1 for NO, -1 for IO, 0 fo
 ### parameters from nu-fit.org as above (JHEP01 (2019) 106, table 1, with SK)
 ### input: sin^2(theta_12), deltam^2_21, NO: sin^2(theta_13), deltam^2_3l, IO: sin^2(theta_13), deltam^2_3l
 spectrum = Oscillated_Spectrum(t12=0.310, m21=7.39*10**(-5), t13_N=0.02240, m3l_N=2.525*10**(-3), t13_I=0.02263, m3l_I=-2.512*10**(-3))
-spectrum_N, spectrum_I = spectrum.osc_spectrum(E,-1,plot_this=False,plot_un=False) # 1 for NO, -1 for IO, 0 for both (plotting)
+spectrum_N, spectrum_I = spectrum.osc_spectrum(E,0,plot_this=True,plot_un=False) # 1 for NO, -1 for IO, 0 for both (plotting)
 
 
 
