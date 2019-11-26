@@ -1,15 +1,17 @@
 # Sensitivity study to the neutrino mass hierarchy in the JUNO experiment
 
+This repository contains the codes to reproduce the antineutrino spectrum as seen by the JUNO experiment.
+
 ## How to run the codes
 
-To run the codes, copy the entire content of the repository except for the file 'test_main.py' and the directories 'prova' and 'FIT'.
-Change the paths in the lines 2-5 of the file 'main.py', for example: 
-```sys.path.insert(0,'<your_path>/JUNO_codes/Reactor')```
+To run the codes, copy the entire content of the repository. 
 
-Run ```ipython main.py -i``` in your shell (```-i``` keeps the interactive shell open). 
-A plot of the antineutrino spectrum with finite energy resolution should be returned (it may take a little since it is done via numerical convolution).
-To obtain other plots, change from ```plot_this=False``` to ```plot_this=True``` where necessary in 'main.py' (see the file for more details).
+Run either ```ipython main.py -i``` or ```python main.py``` on your shell.
+In the former case, ```-i``` keeps the interactive shell open and a plot of the antineutrino spectrum with finite energy resolution should be returned (it may take a little since it is done via numerical convolution).
+In the latter case, there will be no interactive shell and the plot will not be displayed. 
 
+To select which plots to see, change from ```plot_this=False``` to ```plot_this=True```, or vice versa, where necessary in 'main.py' (see the file for more details).
+All plots are saved in pdf format.
 
 ## Brief description of the content of the repository
 
@@ -33,6 +35,3 @@ It is used in a method of the class ```Oscillated_Spectrum``` to introduce the f
   * '3d_graph.py' plots a 3-dimensional graphical representation of the convolution
 
 * 'latex.py' is necessary to use LaTeX in the plots
-
-Please ignore 'test_main.py' and the directory named 'prova'.
-Please ignore also the directory named 'FIT' since the implemention is not ready yet.
