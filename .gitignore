@@ -1,5 +1,10 @@
+# hide these directories:
 prova
+FIT
 
+# hide file with these extentions
 *.pyc
+*.DS_Store
 
+# hide these files:
 test_main.py
