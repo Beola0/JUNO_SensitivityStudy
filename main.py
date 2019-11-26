@@ -9,7 +9,6 @@ sys.path.insert(0,cwd+'/Exp_Resolution')
 
 import latex 
 from reactor import Reactor_Spectrum 
-#from Reactor.reactor import Reactor_Spectrum
 from oscillation import Oscillation_Prob 
 from spectrum import Oscillated_Spectrum
 from convolution import Convolution
