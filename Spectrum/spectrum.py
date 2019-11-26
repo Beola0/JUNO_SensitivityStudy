@@ -1,4 +1,4 @@
-from Reactor.reactor import Reactor_Spectrum
+from reactor import Reactor_Spectrum
 from oscillation import Oscillation_Prob
 from convolution import Convolution
 
