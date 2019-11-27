@@ -2,7 +2,7 @@
 prova
 FIT
 
-# hide file with these extentions
+# hide file with these extensions:
 *.pyc
 *.DS_Store
 
