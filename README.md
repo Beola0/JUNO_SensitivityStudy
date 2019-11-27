@@ -10,7 +10,7 @@ Run either ```ipython main.py -i``` or ```python main.py``` on your shell.
 In the former case, ```-i``` keeps the interactive shell open and a plot of the antineutrino spectrum with finite energy resolution should be returned (it may take a little since it is done via numerical convolution).
 In the latter case, there will be no interactive shell and the plot will not be displayed. 
 
-To select which plots to see, change from ```plot_this=False``` to ```plot_this=True```, or vice versa, where necessary in 'main.py' (see the file for more details).
+To select which plots to see and save, change from ```plot_this=False``` to ```plot_this=True```, or vice versa, where necessary in 'main.py' (see the file for more details).
 All plots are saved in pdf format.
 
 ## Brief description of the content of the repository
