@@ -1,10 +1,9 @@
-#import math
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import simps
 
 
-def reactor_exp(x,a,b,c): # input x is an array
+def reactor_exp(x,a,b,c): 
     res = np.exp(a-b*x-c*(x**2))
     return res
 
@@ -47,7 +46,7 @@ class Reactor_Spectrum:
             ax.set_title(r'Reactor antineutrino flux')
 
             plt.savefig('Reactor/flux.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/flux.pdf\n')
+            print('\nThe plot has been saved in Reactor/flux.pdf')
 
         return self.tot_flux
 
@@ -61,10 +60,10 @@ class Reactor_Spectrum:
         m_e = 0.511 # MeV
         const = 10**(-43) # cm^2
 
-        E_e = np.subtract(E,Delta)  # electron's energy
+        E_e = np.subtract(E,Delta)  # positron's energy
 
         appo = np.power(E_e,2) - m_e**2
-        p_e = np.sqrt(appo) # electron's momentum
+        p_e = np.sqrt(appo) # positron's momentum
 
         appo_exp = alpha + beta * np.log(E) + gamma * np.power(np.log(E),3)
         E_exp = np.power(E,appo_exp)
@@ -84,11 +83,11 @@ class Reactor_Spectrum:
             ax.set_title(r'IBD cross section')
 
             plt.savefig('Reactor/cross_section.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/cross_section.pdf\n')
+            print('\nThe plot has been saved in Reactor/cross_section.pdf')
 
         return self.x_sec
 
-    # this method combines the flux and the cross section to obtain the spectrum
+    ### this method combines the flux and the cross section to obtain the reactor's spectrum
     def unosc_spectrum(self,E,plot_this=False):
         self.flux(E,plot_this=False)
         self.cross_section(E,plot_this=False)
@@ -103,15 +102,15 @@ class Reactor_Spectrum:
             #fig.suptitle('Unoscillated reactor spectrum')
             ax = fig.add_subplot(111)
 
-            #ax.plot(E,self.spectrum_un,'b',linewidth=1,label='spectrum')
-            ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='spectrum')
+            #ax.plot(E,self.spectrum_un,'b',linewidth=1,label='spectrum') # not normalized spectrum
+            ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='spectrum') # normalized spectrum
             ax.grid()
             ax.set_xlabel(r'$\text{E}_{\nu}$ [\si{MeV}]')
             ax.set_ylabel(r'N($\nu$) [arb. unit]')
             ax.set_title(r'Unoscillated reactor spectrum')
 
             plt.savefig('Reactor/unoscillated_spectrum.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/unoscillated_spectrum.pdf\n')
+            print('\nThe plot has been saved in Reactor/unoscillated_spectrum.pdf')
 
         return self.norm_spectrum_un
 

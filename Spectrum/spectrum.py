@@ -15,6 +15,10 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
     ### oscillated spectrum without energy resolution
     def osc_spectrum(self,E,ordering,plot_this=False,plot_un=False):
 
+        if (ordering < -1) or (ordering > 1):
+            print('Error: set ordering = 1 for NO, -1 for IO, 0 for both')
+            return -1
+
         # uses methods of parent classes 
         Reactor_Spectrum.unosc_spectrum(self,E)
         Oscillation_Prob.eval_prob(self,E,0)
@@ -37,14 +41,14 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
             ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
             ax.set_title(r'Antineutrino spectrum')
 
-            if ordering == 1 or ordering == 0: # NO
+            if ordering == 1: # NO
 
                 if plot_un:
                     ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
                 ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_N.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum_N.pdf\n')
+                print('\nThe plot has been saved in Spectrum/osc_spectrum_N.pdf')
 
             if ordering == -1: # IO
 
@@ -53,19 +57,26 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.plot(E,self.norm_osc_spect_I,'r',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum_I.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum_I.pdf\n')
+                print('\nThe plot has been saved in Spectrum/osc_spectrum_I.pdf')
 
-            if ordering == 0: # IO
+            if ordering == 0: # both NO and IO
 
+                if plot_un:
+                    ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
+                ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.plot(E,self.norm_osc_spect_I,'r--',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/osc_spectrum.pdf', format='pdf', transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum.pdf\n')
+                print('\nThe plot has been saved in Spectrum/osc_spectrum.pdf')
 
         return self.norm_osc_spect_N, self.norm_osc_spect_I
 
     ### oscillated spectrum with energy resolution (via numerical convolution)
     def resol_spectrum (self,E,a,b,ordering,plot_this=False):
+
+        if (ordering < -1) or (ordering > 1):
+            print('Error: set ordering = 1 for NO, -1 for IO, 0 for both')
+            return -1
 
         Reactor_Spectrum.unosc_spectrum(self,E)
         Oscillation_Prob.eval_prob(self,E,0)
@@ -75,7 +86,7 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
         ### class Convolution
         conv = Convolution()
-        print('...adding experimental resolution via numerical convolution...')
+        print('\n...adding experimental resolution via numerical convolution...')
         self.resol_N = conv.numerical_conv(self.norm_osc_spect_N,E,a=a,b=b)
         self.resol_I = conv.numerical_conv(self.norm_osc_spect_I,E,a=a,b=b)
 
@@ -91,26 +102,27 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
             ax.set_ylim(-0.005,0.095)
             ax.set_title(r'Antineutrino spectrum' + '\nwith finite energy resolution')
 
-            if ordering == 1 or ordering == 0: # NO
+            if ordering == 1: # NO
 
                 ax.plot(E-0.8,self.resol_N,'b',linewidth=1,label='NO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum_N.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum_N.pdf\n')
+                print('\nThe plot has been saved in Spectrum/resol_spectrum_N.pdf')
 
             if ordering == -1: # IO
 
                 ax.plot(E-0.8,self.resol_I,'r',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum_I.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum_I.pdf\n')
+                print('\nThe plot has been saved in Spectrum/resol_spectrum_I.pdf')
 
-            if ordering == 0: # IO
+            if ordering == 0: # both NO and IO
 
+                ax.plot(E-0.8,self.resol_N,'b',linewidth=1,label='NO')
                 ax.plot(E-0.8,self.resol_I,'r--',linewidth=1,label='IO')
                 ax.legend()
                 fig.savefig('Spectrum/resol_spectrum.pdf', format='pdf', transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum.pdf\n')
+                print('\nThe plot has been saved in Spectrum/resol_spectrum.pdf')
 
         return self.resol_N, self.resol_I
 

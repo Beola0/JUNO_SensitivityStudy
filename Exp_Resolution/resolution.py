@@ -1,5 +1,8 @@
+import os
+cwd = os.getcwd()
+
 import sys
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes')
+sys.path.insert(0,cwd)
 
 import math
 import numpy as np
@@ -46,7 +49,7 @@ ax1.tick_params(axis='y', labelcolor='r')
 fig.tight_layout()
 
 fig.savefig('resolution.pdf',format='pdf',transparent=True)
-print('The plot has been saved in resolution.pdf')
+print('\nThe plot has been saved in resolution.pdf')
 
 plt.ion()
 plt.show()

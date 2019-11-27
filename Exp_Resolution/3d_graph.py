@@ -1,8 +1,11 @@
+import os
+cwd = os.getcwd()
+
 import sys
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Reactor')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Oscillation')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes/Spectrum')
-sys.path.insert(0,'/Users/beatricejelmini/Desktop/JUNO/JUNO_codes')
+sys.path.insert(0,cwd+'/Reactor')
+sys.path.insert(0,cwd+'/Oscillation')
+sys.path.insert(0,cwd+'/Spectrum')
+sys.path.insert(0,cwd)
 
 import latex 
 from reactor import Reactor_Spectrum 
@@ -87,7 +90,7 @@ ax.set_zlabel(r'N [arb. unit]')
 #ax.set_zlim(-0.005,0.095)
 ax.legend(prop={'size': 8})
 fig.savefig('3d_convolution.pdf',format='pdf') 
-print('The plot has been saved in 3d_convolution.pdf')
+print('\nThe plot has been saved in 3d_convolution.pdf')
 
 ### plot of the matrix of the detector's response
 fig2 = plt.figure()
@@ -99,7 +102,7 @@ ax2.set_ylabel(r'$\text{E}_{\text{dep}}$ [\si{MeV}]')
 bar.set_label(r'G($\text{E}_{\text{vis}} - \text{E}_{\text{dep}}$,$\delta \text{E}_{\text{dep}}$)')
 ax2.set_title(r'Detector response')
 fig2.savefig('response.pdf',format='pdf')
-print('The plot has been saved in response.pdf')
+print('\nThe plot has been saved in response.pdf')
 
 ### plot of the result of the convolution
 fig1 = plt.figure()
@@ -114,7 +117,7 @@ ax1.set_ylim(-0.005,0.095)
 ax1.grid()
 ax1.legend()
 fig1.savefig('conv_3d.pdf',format='pdf') 
-print('The plot has been saved in conv_3d.pdf')
+print('\nThe plot has been saved in conv_3d.pdf')
 
 plt.ion()
 plt.show()

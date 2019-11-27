@@ -17,6 +17,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+
+
+
 ##### MAIN PROGRAM #####
 
 #time_start = time.process_time_ns()
@@ -70,19 +73,20 @@ resol_spect_N, resol_spect_I = spectrum.resol_spectrum (E,a,b,0,plot_this=False)
 #elapsed_time = time.process_time_ns() - time_start
 #print('elapsed time: '+str(elapsed_time*10**(-6))+' ms')
 
-fig = plt.figure()
+fig = plt.figure(figsize=[10., 7.5])
 ax = fig.add_subplot(111)
-ax.plot(E-0.8,resol_spect_N,'b',linewidth=1,label='NO')
-ax.plot(E-0.8,resol_spect_I,'r--',linewidth=1,label='IO')
+ax.plot(E-0.8,resol_spect_N,'b',linewidth=1.5,label='NO')
+ax.plot(E-0.8,resol_spect_I,'r--',linewidth=1.5,label='IO')
 ax.set_xlabel(r'$\text{E}_{\text{vis}}$ [\si{MeV}]')
 ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
 ax.set_ylim(-0.005,0.095)
 ax.set_title(r'Antineutrino spectrum' + '\nwith finite energy resolution')
-ax.text(8.05,0.05,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
+ax.text(7.05,0.062,r'$\frac{\sigma(\text{E})}{\text{E}} = \sqrt{ \left( \frac{\text{a}}{\sqrt{\text{E}}} \right)^2 + \text{b}^2 }$')
+ax.text(7.05,0.052,r'a = \SI{%.1f}{\percent}' % (a*100) + '\nb = \SI{%.1f}{\percent}' % (b*100))
 ax.legend()
 ax.grid()
 fig.savefig('oscillated_spectrum.pdf',format='pdf',transparent=True) 
-print('The plot has been saved in oscillated_spectrum.pdf')
+print('\nThe plot has been saved in oscillated_spectrum.pdf')
 
 plt.ion()
 plt.show()

@@ -14,7 +14,7 @@ class Convolution ():
 
     ### convolution of a function f with a gaussian in a given range E
 
-    # using np.convolve()
+    ### using np.convolve()
     def np_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False): 
 
         Evis = E - 0.8
@@ -59,8 +59,8 @@ class Convolution ():
         return self.conv_np
 
 
-    # using a numerical method: numerical convolution (over Evis)
-    # need (sigma) OR (a or b)
+    ### using a numerical method: numerical convolution (over Evis)
+    ### need (sigma) OR (a or b)
     def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False):
 
         Evis = E - 0.8
