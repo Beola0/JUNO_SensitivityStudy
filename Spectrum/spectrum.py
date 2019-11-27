@@ -72,6 +72,8 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
         return self.norm_osc_spect_N, self.norm_osc_spect_I
 
     ### oscillated spectrum with energy resolution (via numerical convolution)
+    ### for further reference: https://arxiv.org/abs/1210.8141, eq. (2.12) and (2.14)
+    ### see also the implementation of the numerical convolution in the class Convolution
     def resol_spectrum (self,E,a,b,ordering,plot_this=False):
 
         if (ordering < -1) or (ordering > 1):

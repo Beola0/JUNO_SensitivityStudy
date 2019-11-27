@@ -106,7 +106,7 @@ class Reactor_Spectrum:
             ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='spectrum') # normalized spectrum
             ax.grid()
             ax.set_xlabel(r'$\text{E}_{\nu}$ [\si{MeV}]')
-            ax.set_ylabel(r'N($\nu$) [arb. unit]')
+            ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
             ax.set_title(r'Unoscillated reactor spectrum')
 
             plt.savefig('Reactor/unoscillated_spectrum.pdf',format='pdf',transparent=True)
