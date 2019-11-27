@@ -5,6 +5,7 @@ FIT
 # hide file with these extensions:
 *.pyc
 *.DS_Store
+*.txt
 
 # hide these files:
 test_main.py
