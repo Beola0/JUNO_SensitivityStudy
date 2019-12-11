@@ -1,8 +1,6 @@
 # hide these directories:
 prova
 FIT
-PULL
-Covariance
 
 # hide file with these extensions:
 *.pyc
