@@ -7,6 +7,7 @@ Covariance
 *.pyc
 *.DS_Store
 *.txt
+*.pdf
 
 # hide these files:
 test_main.py
