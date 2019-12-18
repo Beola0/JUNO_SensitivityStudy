@@ -63,6 +63,7 @@ class Convolution ():
     ### need (sigma) OR (a or b)
     def numerical_conv(self,f,E,sigma='',a='',b='',plot_this=False,plot_start=False):
 
+        #E is Evis or Erec
         Evis = E - 0.8
 
         if sigma != '' and (a != '' or b != ''):

@@ -85,6 +85,8 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
         self.norm_osc_spect_N = self.norm_spectrum_un * self.prob_E_N
         self.norm_osc_spect_I = self.norm_spectrum_un * self.prob_E_I
+        
+        #Evis = E - 0.8
 
         ### class Convolution
         conv = Convolution()
