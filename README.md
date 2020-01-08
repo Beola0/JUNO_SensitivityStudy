@@ -1,6 +1,10 @@
 # Sensitivity study to the neutrino mass hierarchy in the JUNO experiment
 
-This repository contains the codes to reproduce the antineutrino spectrum as seen by the JUNO experiment.
+The aim of this study is to determine the sensitivity to the determination of the neutrino mass hierarchy in the JUNO experiment.
+
+First, it is necessary to reproduce the oscillated antineutrino spectrum as seen by the JUNO experiment. This is done in the AntineutrinoSpectrum directory, see below for details.
+
+Secondly, the sensitivity study will be performed through a chi-squared analysis. Codes will be uploaded once ready.
 
 ## How to run the codes
 
@@ -15,23 +19,27 @@ All plots are saved in pdf format.
 
 ## Brief description of the content of the repository
 
-* Reactor: 
-'reactor.py' contains the class ```Reactor```.
+* 'main.py': run this file to obtain plots and results
+
+* 'latex.py': necessary to use LaTeX in the plots
+
+### AntineutrinoSpectrum
+
+* 'reactor.py' contains the class ```Reactor```.
 This class has methods to create the reactor's flux, the IBD cross section and the reactor's spectrum.
 
-* Oscillation: 
-'oscillation.py' contains the class ```Oscillation_Prob```.
+* 'oscillation.py' contains the class ```Oscillation_Prob```.
 This class has a method to obtain the survival probability both as a function of L/E and of E.
 
-* Spectrum: 
-'spectrum.py' contains the class ```Oscillated_Spectrum``` which has ```Reactor``` and ```Oscillation_Prob``` as parent classes.
-This class has a method to obtain the oscillated spectrum without including energy resolution.
+* 'spectrum.py' contains the class ```Oscillated_Spectrum``` which has ```Reactor``` and ```Oscillation_Prob``` as parent classes.
+This class has a method to obtain the oscillated spectrum both with and without including the finite energy resolution.
 
-* Exp_resolution: 
-  * 'convolution.py' contains the class ```Convolution```.
+* 'convolution.py' contains the class ```Convolution```.
 This class has a method which executes the numerical convolution of a function f with a gaussian of fixed or variable width.
-It is used in a method of the class ```Oscillated_Spectrum``` to introduce the finite experimental resolution in the oscillated spectrum
-  * 'resolution.py' plots the energy resolution as a function of energy for given stochastic term, _a_, and constant term, _b_
-  * '3d_graph.py' plots a 3-dimensional graphical representation of the convolution
+It is used in a method of the class ```Oscillated_Spectrum``` to introduce the finite experimental resolution in the oscillated spectrum.
 
-* 'latex.py' is necessary to use LaTeX in the plots
+* 'resolution.py' plots the energy resolution as a function of the deposited energy for given stochastic term, _a_, and constant term, _b_.
+
+* '3d_graph.py' plots a 3-dimensional graphical representation of the numerical convolution of a function f with a gaussian of fixed or variable width.
+
+Note: 'resolution.py' and '3d_graph.py' are independent of the main file, so they need to be run separately.
