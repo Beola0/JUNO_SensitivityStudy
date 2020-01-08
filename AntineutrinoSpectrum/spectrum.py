@@ -47,8 +47,8 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                     ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
                 ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.legend()
-                fig.savefig('Spectrum/osc_spectrum_N.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum_N.pdf')
+                fig.savefig('AntineutrinoSpectrum/osc_spectrum_N.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/osc_spectrum_N.pdf')
 
             if ordering == -1: # IO
 
@@ -56,8 +56,8 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                     ax.plot(E,self.norm_spectrum_un,'k',linewidth=1,label='Unoscillated spectrum')
                 ax.plot(E,self.norm_osc_spect_I,'r',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Spectrum/osc_spectrum_I.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum_I.pdf')
+                fig.savefig('AntineutrinoSpectrum/osc_spectrum_I.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/osc_spectrum_I.pdf')
 
             if ordering == 0: # both NO and IO
 
@@ -66,8 +66,8 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
                 ax.plot(E,self.norm_osc_spect_N,'b',linewidth=1,label='NO')
                 ax.plot(E,self.norm_osc_spect_I,'r--',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Spectrum/osc_spectrum.pdf', format='pdf', transparent=True)
-                print('\nThe plot has been saved in Spectrum/osc_spectrum.pdf')
+                fig.savefig('AntineutrinoSpectrum/osc_spectrum.pdf', format='pdf', transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/osc_spectrum.pdf')
 
         return self.norm_osc_spect_N, self.norm_osc_spect_I
 
@@ -91,6 +91,7 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
         ### class Convolution
         conv = Convolution()
         print('\n...adding experimental resolution via numerical convolution...')
+        print('\nIt might take a while')
         self.resol_N = conv.numerical_conv(self.norm_osc_spect_N,E,a=a,b=b)
         self.resol_I = conv.numerical_conv(self.norm_osc_spect_I,E,a=a,b=b)
 
@@ -110,23 +111,23 @@ class Oscillated_Spectrum (Oscillation_Prob,Reactor_Spectrum):
 
                 ax.plot(E-0.8,self.resol_N,'b',linewidth=1,label='NO')
                 ax.legend()
-                fig.savefig('Spectrum/resol_spectrum_N.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum_N.pdf')
+                fig.savefig('AntineutrinoSpectrum/resol_spectrum_N.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/resol_spectrum_N.pdf')
 
             if ordering == -1: # IO
 
                 ax.plot(E-0.8,self.resol_I,'r',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Spectrum/resol_spectrum_I.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum_I.pdf')
+                fig.savefig('AntineutrinoSpectrum/resol_spectrum_I.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/resol_spectrum_I.pdf')
 
             if ordering == 0: # both NO and IO
 
                 ax.plot(E-0.8,self.resol_N,'b',linewidth=1,label='NO')
                 ax.plot(E-0.8,self.resol_I,'r--',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Spectrum/resol_spectrum.pdf', format='pdf', transparent=True)
-                print('\nThe plot has been saved in Spectrum/resol_spectrum.pdf')
+                fig.savefig('AntineutrinoSpectrum/resol_spectrum.pdf', format='pdf', transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/resol_spectrum.pdf')
 
         return self.resol_N, self.resol_I
 

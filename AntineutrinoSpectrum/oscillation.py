@@ -76,34 +76,34 @@ class Oscillation_Prob:
 
                 ax.semilogx(x/1000,self.prob_N,'b',linewidth=1,label='NO')
                 ax.legend()
-                fig.savefig('Oscillation/prob_N_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_N_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/prob_N_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_N_LE.pdf')
                 ax1.plot(E,self.prob_E_N,'b',linewidth=1,label='NO')
                 ax1.legend()
-                fig1.savefig('Oscillation/prob_N_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_N_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/prob_N_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_N_E.pdf')
 
             if ordering == -1: # IO
                 ax.semilogx(x/1000,self.prob_I,'r',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Oscillation/prob_I_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_I_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/prob_I_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_I_LE.pdf')
                 ax1.plot(E,self.prob_E_I,'r',linewidth=1,label='IO')
                 ax1.legend()
-                fig1.savefig('Oscillation/prob_I_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_I_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/prob_I_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_I_E.pdf')
 
             if ordering == 0: # both NO and IO
                 ax.semilogx(x/1000,self.prob_N,'b',linewidth=1,label='NO')
                 ax.semilogx(x/1000,self.prob_I,'r--',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Oscillation/prob_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/prob_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_LE.pdf')
                 ax1.plot(E,self.prob_E_N,'b',linewidth=1,label='NO')
                 ax1.plot(E,self.prob_E_I,'r--',linewidth=1,label='IO')
                 ax1.legend()
-                fig1.savefig('Oscillation/prob_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/prob_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/prob_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/prob_E.pdf')
 
         return self.prob_E_N, self.prob_E_I
 
@@ -173,34 +173,34 @@ class Oscillation_Prob:
 
                 ax.semilogx(x/1000,self.jhep_prob_N,'b',linewidth=1,label='NO')
                 ax.legend()
-                fig.savefig('Oscillation/jhep_2013_prob_N_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_N_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/jhep_2013_prob_N_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_N_LE.pdf')
                 ax1.plot(E,self.jhep_prob_E_N,'b',linewidth=1,label='NO')
                 ax1.legend()
-                fig1.savefig('Oscillation/jhep_2013_prob_N_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_N_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/jhep_2013_prob_N_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_N_E.pdf')
 
             if ordering == -1: # IO
                 ax.semilogx(x/1000,self.jhep_prob_I,'r',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Oscillation/jhep_2013_prob_I_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_I_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/jhep_2013_prob_I_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_I_LE.pdf')
                 ax1.plot(E,self.jhep_prob_E_I,'r',linewidth=1,label='IO')
                 ax1.legend()
-                fig1.savefig('Oscillation/jhep_2013_prob_I_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_I_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/jhep_2013_prob_I_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_I_E.pdf')
 
             if ordering == 0: # both NO and IO
                 ax.semilogx(x/1000,self.jhep_prob_N,'b',linewidth=1,label='NO')
                 ax.semilogx(x/1000,self.jhep_prob_I,'r--',linewidth=1,label='IO')
                 ax.legend()
-                fig.savefig('Oscillation/jhep_2013_prob_LE.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_LE.pdf')
+                fig.savefig('AntineutrinoSpectrum/jhep_2013_prob_LE.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_LE.pdf')
                 ax1.plot(E,self.jhep_prob_E_N,'b',linewidth=1,label='NO')
                 ax1.plot(E,self.jhep_prob_E_I,'r--',linewidth=1,label='IO')
                 ax1.legend()
-                fig1.savefig('Oscillation/jhep_2013_prob_E.pdf',format='pdf',transparent=True)
-                print('\nThe plot has been saved in Oscillation/jhep_2013_prob_E.pdf')
+                fig1.savefig('AntineutrinoSpectrum/jhep_2013_prob_E.pdf',format='pdf',transparent=True)
+                print('\nThe plot has been saved in AntineutrinoSpectrum/jhep_2013_prob_E.pdf')
 
         return self.jhep_prob_E_N, self.jhep_prob_E_I
 

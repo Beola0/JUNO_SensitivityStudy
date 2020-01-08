@@ -45,8 +45,8 @@ class Reactor_Spectrum:
             ax.set_ylabel(r'$\Phi_{\nu}$')
             ax.set_title(r'Reactor antineutrino flux')
 
-            plt.savefig('Reactor/flux.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/flux.pdf')
+            plt.savefig('AntineutrinoSpectrum/flux.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in AntineutrinoSpectrum/flux.pdf')
 
         return self.tot_flux
 
@@ -82,8 +82,8 @@ class Reactor_Spectrum:
             ax.set_ylabel(r'$\sigma_{\text{IBD}}$ [\si{\centi\meter\squared}]')
             ax.set_title(r'IBD cross section')
 
-            plt.savefig('Reactor/cross_section.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/cross_section.pdf')
+            plt.savefig('AntineutrinoSpectrum/cross_section.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in AntineutrinoSpectrum/cross_section.pdf')
 
         return self.x_sec
 
@@ -109,8 +109,8 @@ class Reactor_Spectrum:
             ax.set_ylabel(r'N($\bar{\nu}$) [arb. unit]')
             ax.set_title(r'Unoscillated reactor spectrum')
 
-            plt.savefig('Reactor/unoscillated_spectrum.pdf',format='pdf',transparent=True)
-            print('\nThe plot has been saved in Reactor/unoscillated_spectrum.pdf')
+            plt.savefig('AntineutrinoSpectrum/unoscillated_spectrum.pdf',format='pdf',transparent=True)
+            print('\nThe plot has been saved in AntineutrinoSpectrum/unoscillated_spectrum.pdf')
 
         return self.norm_spectrum_un
 
