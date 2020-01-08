@@ -2,10 +2,11 @@ import os
 cwd = os.getcwd()
 
 import sys
-sys.path.insert(0,cwd+'/Reactor')
-sys.path.insert(0,cwd+'/Oscillation')
-sys.path.insert(0,cwd+'/Spectrum')
-sys.path.insert(0,cwd+'/Exp_Resolution')
+#sys.path.insert(0,cwd+'/Reactor')
+#sys.path.insert(0,cwd+'/Oscillation')
+#sys.path.insert(0,cwd+'/Spectrum')
+#sys.path.insert(0,cwd+'/Exp_Resolution')
+sys.path.insert(0,cwd+'/AntineutrinoSpectrum')
 
 import latex 
 from reactor import Reactor_Spectrum 

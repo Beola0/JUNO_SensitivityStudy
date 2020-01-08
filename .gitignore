@@ -1,15 +1,6 @@
-# hide these directories:
-prova
-PULL
-Covariance
-Baselines
-Test_
-
 # hide file with these extensions:
 *.pyc
 *.DS_Store
 *.txt
 *.pdf
 
-# hide these files:
-test_main.py
