@@ -51,4 +51,4 @@ The code to estimate the total number of IBD events in JUNO due to reactor antin
 To run the code simply type either ```ipython IBD_main.py -i``` or ```python IBD_main.py``` on your shell.
 The total number of events and the single contribution of the 12 reactors should be printed on shell.
 
-In 'IBD_main.py', one can modify the number of year (```years```), the IBD detection efficiency (```epsilon_IBD```) and the time efficiency, i.d. the effective runtime of a year (```eff_T```).
+In 'IBD_main.py', one can modify the number of years (```years```), the IBD detection efficiency (```epsilon_IBD```) and the time efficiency, i.d. the effective runtime per year (```eff_T```).
