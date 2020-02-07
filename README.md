@@ -43,3 +43,12 @@ It is used in a method of the class ```Oscillated_Spectrum``` to introduce the f
 * '3d_graph.py' plots a 3-dimensional graphical representation of the numerical convolution of a function f with a gaussian of fixed or variable width.
 
 Note: 'resolution.py' and '3d_graph.py' are independent of the main file, so they need to be run separately.
+
+### IBD_events
+
+The code to estimate the total number of IBD events in JUNO due to reactor antineutrinos given the number of year of data taking and the efficiencies can be found in this directory.
+
+To run the code simply type either ```ipython IBD_main.py -i``` or ```python IBD_main.py``` on your shell.
+The total number of events and the single contribution of the 12 reactors should be printed on shell.
+
+In 'IBD_main.py', one can modify the number of year (```year```), the IBD detection efficiency (```epsilon_IBD```) and the time efficiency, i.d. the effective runtime of a year (```eff_T```).
