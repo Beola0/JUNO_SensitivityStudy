@@ -52,3 +52,6 @@ To run the code simply type either ```ipython IBD_main.py -i``` or ```python IBD
 The total number of events and the single contribution of the 12 reactors should be printed on shell.
 
 In 'IBD_main.py', one can modify the number of years (```years```), the IBD detection efficiency (```epsilon_IBD```) and the time efficiency, i.d. the effective runtime per year (```eff_T```).
+
+
+Last update: 7th February 2020
