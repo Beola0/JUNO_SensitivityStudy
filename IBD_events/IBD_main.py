@@ -14,7 +14,7 @@ from scipy import integrate
 
 time_start = time.process_time_ns()
 
-E = np.arange(1.806,8.,0.01) # in MeV
+E = np.arange(1.806,8.01,0.01) # in MeV
 # change step from 0.01 to 0.001 or viceversa
 
 N_P = 1.45e33
@@ -23,6 +23,7 @@ power_GW = np.array([2.9,2.9,2.9,2.9,2.9,2.9,4.6,4.6,4.6,4.6,17.4,17.4])
 react_name = ['YJ-C1','YJ-C2','YJ-C3','YJ-C4','YJ-C5','YJ-C6','TS-C1','TS-C2','TS-C3','TS-C4','DYB','HZ']
 #baselines = np.array([52.75,52.84,52.42,52.51,52.12,52.21,52.76,52.63,52.32,52.20]) # [km] 
 #power_GW = np.array([2.9,2.9,2.9,2.9,2.9,2.9,4.6,4.6,4.6,4.6])
+#react_name = ['YJ-C1','YJ-C2','YJ-C3','YJ-C4','YJ-C5','YJ-C6','TS-C1','TS-C2','TS-C3','TS-C4']
 years = 6
 T = 365. * years * 86400 # [s]
 eff_T = 0.822 # 300 days per year 
